@@ -22,6 +22,7 @@ type State = {
   show: boolean;
   text: string;
   showinput: boolean;
+  dateDisplayed: boolean;
 };
 
 const datenow = new Date();
@@ -38,6 +39,7 @@ export default class Calendar extends Component<Props, State> {
       show: false,
       text: "None",
       showinput: false,
+      dateDisplayed: false,
     };
     this.onDateChange = this.onDateChange.bind(this);
     this.onChangeTime = this.onChangeTime.bind(this);
@@ -75,7 +77,8 @@ export default class Calendar extends Component<Props, State> {
   }
 
   onChangeTime(event: any, value: Date | any) {
-    let formatedTempTime = value.getHours() + " : " + value.getMinutes();
+    // let formatedTempTime = value.getHours() + " : " + value.getMinutes();
+    let formatedTempTime = moment(value).format("HH:mm");
     this.setState({
       time: value,
       text: formatedTempTime,
@@ -124,7 +127,7 @@ export default class Calendar extends Component<Props, State> {
               style={styles.datePicker}
               value={this.state.time}
               mode="time"
-              display={Platform.OS === "ios" ? "spinner" : "default"}
+              display={"default"}
               is24Hour={true}
               minuteInterval={30}
               onChange={this.onChangeTime}
@@ -138,6 +141,7 @@ export default class Calendar extends Component<Props, State> {
             showinput={this.state.showinput}
             resetState={this.resetState}
             date={this.state.selectedStartDate}
+            dateDisp={this.state.dateDisplayed}
           />
         )}
       </View>

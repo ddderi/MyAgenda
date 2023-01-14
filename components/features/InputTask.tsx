@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -9,14 +9,14 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { addTask } from "../../redux/taskSlice";
+import { addTask, triggerLoading } from "../../redux/taskSlice";
 import {
   useDispatch,
   useSelector,
   Provider as ReduxProvider,
 } from "react-redux";
-import uuid from "react-native-uuid";
 import moment from "moment";
+import { RootState } from "../../redux/store";
 (moment as any).suppressDeprecationWarnings = true;
 
 type Props = {
@@ -25,12 +25,13 @@ type Props = {
   time: Date;
   showinput: boolean;
   date: Date;
+  dateDisp: boolean;
 };
 
 type Newtask = {
-  id: string;
+  id: number | undefined;
   name: string;
-  done: boolean;
+  done: number;
   time: string;
   date: string;
 };
@@ -39,20 +40,36 @@ const InputTask = (props: Props) => {
   const [task, setTask] = useState<string>("");
   const dispatch = useDispatch();
 
+  const dateDisplayed = useSelector(
+    (state: RootState) => state.tasks.dateDisplayed
+  );
+  // console.log(props.dateDisp);
   const handleAddTask = () => {
     Keyboard.dismiss();
+    const dateCondition = (dateDisp: boolean) => {
+      if (dateDisp) {
+        return dateDisplayed;
+      } else if (!dateDisp) {
+        return dateToday(props.date);
+      }
+    };
     const dateToday = (date: Date) => moment(date).format("DD/MM/YYYY");
     const timeFormated = (time: Date) => moment(time).format("HH:mm");
     const newtask: Newtask = {
-      id: `${uuid.v4()}`,
+      id: undefined,
       name: task,
-      done: false,
+      done: 0,
       time: `${timeFormated(props.time)}` || `${timeFormated(new Date())}`,
-      date: `${dateToday(props.date)}` || `${dateToday(new Date())}`,
+      date: `${dateCondition(props.dateDisp)}`,
+
+      // date: `${dateToday(props.date)}` || `${dateDisplayed}`,
+
       // totalDate(props.date, props.date, props.date) ||
       // totalDate(new Date(), new Date(), new Date()),
     };
+    console.log(props.dateDisp);
     dispatch(addTask(newtask));
+    dispatch(triggerLoading(true));
     setTask("");
     props.showInputTask(false);
     props.resetState();

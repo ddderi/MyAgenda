@@ -9,13 +9,17 @@ import {
   Keyboard,
 } from "react-native";
 import Task from "./features/Task";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   useDispatch,
   useSelector,
   Provider as ReduxProvider,
 } from "react-redux";
-import { changeDateDisplay } from "../redux/taskSlice";
+import {
+  changeDateDisplay,
+  loadTasks,
+  triggerLoading,
+} from "../redux/taskSlice";
 import { RootState } from "../redux/store";
 import uuid from "react-native-uuid";
 import { AntDesign } from "@expo/vector-icons";
@@ -24,15 +28,17 @@ import { DrawerNavigationProp } from "@react-navigation/drawer";
 import InputTask from "./features/InputTask";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
+import * as SQLite from "expo-sqlite";
 
 type Newtask = {
-  id: string;
+  id: number;
   name: string;
-  done: boolean;
+  done: number;
   date: string;
 };
 
 const Home: React.FC = () => {
+  const db = SQLite.openDatabase("todos.db");
   const datelocal = new Date();
   const datelocalStr = moment(datelocal).format("DD/MM/YYYY");
   const dispatch = useDispatch();
@@ -41,7 +47,19 @@ const Home: React.FC = () => {
   const dateDisplayed = useSelector(
     (state: RootState) => state.tasks.dateDisplayed
   );
-
+  const stateLoaded = useSelector(
+    (state: RootState) => state.tasks.needToBeLoaded
+  );
+  // console.log(stateLoaded);
+  // db.transaction((tx) => {
+  //   tx.executeSql(`CREATE TABLE IF NOT EXISTS todos (
+  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
+  //     name TEXT,
+  //     done INTEGER DEFAULT "0",
+  //     time TEXT,
+  //     date TEXT `);
+  // });
+  // console.log(tasksArray);
   // const datecopy = new Date(dateDisplayed);
   const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
@@ -50,6 +68,7 @@ const Home: React.FC = () => {
 
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
+  const [dateDisp, setDateDisp] = useState<boolean>(true);
   const [showinput, setShowinput] = useState<boolean>(false);
 
   const resetState = () => {};
@@ -68,6 +87,68 @@ const Home: React.FC = () => {
       date={task.date}
     />
   ));
+
+  useEffect(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS todos (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, done INTEGER DEFAULT "0", time TEXT, date TEXT)'
+      );
+    });
+
+    db.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM todos",
+        null,
+        (txObj, resultSet: any) => {
+          // state.tasks.push(resultSet.rows._array);
+          dispatch(loadTasks(resultSet.rows._array));
+          // state.tasks = resultSet.rows._array;
+          // console.log("test", resultSet.rows._array);
+        },
+        (_, error): boolean | any => {
+          console.warn(error);
+        }
+      );
+    });
+
+    // dispatch(loadTasks(tasksArray));
+  }, []);
+
+  useEffect(() => {
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     "SELECT * FROM todos",
+    //     null,
+    //     (txObj, resultSet: any) => {
+    //       // state.tasks.push(resultSet.rows._array);
+    //       dispatch(loadTasks(resultSet.rows._array));
+    //       // state.tasks = resultSet.rows._array;
+    //       console.log("test", resultSet.rows._array);
+    //     },
+    //     (_, error): boolean | any => {
+    //       console.warn(error);
+    //     }
+    //   );
+    // });
+    if (stateLoaded === true) {
+      db.transaction((tx) => {
+        tx.executeSql(
+          "SELECT * FROM todos",
+          null,
+          (txObj, resultSet: any) => {
+            // state.tasks.push(resultSet.rows._array);
+            dispatch(loadTasks(resultSet.rows._array));
+            // state.tasks = resultSet.rows._array;
+            // console.log("test", resultSet.rows._array);
+          },
+          (_, error): boolean | any => {
+            console.warn(error);
+          }
+        );
+      });
+      dispatch(triggerLoading(false));
+    }
+  }, [stateLoaded]);
 
   return (
     <>
@@ -115,6 +196,7 @@ const Home: React.FC = () => {
             showinput={showinput}
             resetState={resetState}
             date={dateFormated}
+            dateDisp={dateDisp}
           />
         </View>
       </View>
