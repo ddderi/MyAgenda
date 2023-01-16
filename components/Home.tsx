@@ -96,9 +96,10 @@ const Home: React.FC = () => {
     });
 
     db.transaction((tx) => {
+      let x: any = null;
       tx.executeSql(
         "SELECT * FROM todos",
-        null,
+        x,
         (txObj, resultSet: any) => {
           // state.tasks.push(resultSet.rows._array);
           dispatch(loadTasks(resultSet.rows._array));
@@ -131,10 +132,11 @@ const Home: React.FC = () => {
     //   );
     // });
     if (stateLoaded === true) {
+      let x: any = null;
       db.transaction((tx) => {
         tx.executeSql(
           "SELECT * FROM todos",
-          null,
+          x,
           (txObj, resultSet: any) => {
             // state.tasks.push(resultSet.rows._array);
             dispatch(loadTasks(resultSet.rows._array));
