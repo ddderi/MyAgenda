@@ -113,6 +113,10 @@ const taskSlice = createSlice({
         state.dateDisplayed = moment(lessOneDay).format("DD/MM/YYYY");
       }
     },
+    setDateDisplay: (state, action) => {
+      console.log(action);
+      // state.dateDisplayed = action.payload
+    },
   },
 });
 
@@ -123,6 +127,7 @@ export const {
   changeDateDisplay,
   loadTasks,
   triggerLoading,
+  setDateDisplay,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

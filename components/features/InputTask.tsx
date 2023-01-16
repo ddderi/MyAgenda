@@ -81,6 +81,7 @@ const InputTask = (props: Props) => {
       style={styles.writeTaskWrapper}
     >
       <TextInput
+        maxLength={30}
         style={styles.input}
         placeholder={"Add a task..."}
         value={task}

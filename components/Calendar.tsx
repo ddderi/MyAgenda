@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  Button,
 } from "react-native";
 import React, { Component } from "react";
 import { AntDesign } from "@expo/vector-icons";
@@ -11,9 +12,23 @@ import CalendarPicker from "react-native-calendar-picker";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import InputTask from "./features/InputTask";
+import { useNavigation } from "@react-navigation/native";
+import { setDateDisplay } from "../redux/taskSlice";
+import {
+  useDispatch,
+  useSelector,
+  Provider as ReduxProvider,
+  connect,
+} from "react-redux";
+import { Dispatch } from "redux";
+import { useAppDispatch } from "../hooks";
+
+// export const useAppDispatch: () => AppDispatch = useDispatch;
+// export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 interface Props {
   navigation: any;
+  setDateDisplay: any;
 }
 
 type State = {
@@ -28,7 +43,7 @@ type State = {
 const datenow = new Date();
 const dateToday = moment();
 
-export default class Calendar extends Component<Props, State> {
+export class Calendar extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -72,7 +87,13 @@ export default class Calendar extends Component<Props, State> {
   onDateChange(date: any) {
     this.setState({
       selectedStartDate: date,
-      show: true,
+      // show: true,
+    });
+  }
+
+  openTime(value: boolean) {
+    this.setState({
+      show: value,
     });
   }
 
@@ -88,10 +109,23 @@ export default class Calendar extends Component<Props, State> {
   }
 
   render() {
+    // const { dispatch: any } = this.props;
+    const dateDispViewDate = moment(this.state.selectedStartDate).format(
+      "DD/MM/YYYY"
+    );
+
+    const navigateToDate = (date: string) => {
+      navigation.navigate("ViewDate", {
+        date: dateDispViewDate,
+      });
+      this.props.setDateDisplay(dateDispViewDate);
+    };
+
     const minDate = new Date();
     const { navigation } = this.props;
     const { selectedStartDate } = this.state;
     const startDate = selectedStartDate ? selectedStartDate : "";
+    // const navigation = useNavigation();
     return (
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
@@ -99,6 +133,14 @@ export default class Calendar extends Component<Props, State> {
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
+            <Button
+              title="View selected date"
+              onPress={() =>
+                navigation.navigate("ViewDate", {
+                  date: dateDispViewDate,
+                })
+              }
+            />
           </View>
           <Text style={styles.sectionTitle}>Calandar</Text>
         </View>
@@ -116,9 +158,12 @@ export default class Calendar extends Component<Props, State> {
               {moment(startDate).format("DD/MM/YYYY")}
             </Text>
           </View>
-          <View style={{ marginLeft: 30, flexDirection: "row" }}>
+          <View style={{ marginLeft: 30, flexDirection: "row", width: "100%" }}>
             <Text>SELECTED TIME: </Text>
             <Text style={{ marginLeft: 30 }}>{this.state.text}</Text>
+            <View style={{ right: 0 }}>
+              <Button title="Select Time" onPress={() => this.openTime(true)} />
+            </View>
           </View>
         </View>
         <View>
@@ -148,6 +193,16 @@ export default class Calendar extends Component<Props, State> {
     );
   }
 }
+
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    setDateDisplay: (dateDispViewDate: string) => {
+      dispatch(setDateDisplay(dateDispViewDate));
+    },
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Calendar);
 
 const styles = StyleSheet.create({
   menuicon: {
