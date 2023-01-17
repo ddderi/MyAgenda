@@ -7,7 +7,7 @@ import {
   Button,
 } from "react-native";
 import React, { Component } from "react";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, Fontisto } from "@expo/vector-icons";
 import CalendarPicker from "react-native-calendar-picker";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -21,10 +21,6 @@ import {
   connect,
 } from "react-redux";
 import { Dispatch } from "redux";
-import { useAppDispatch } from "../hooks";
-
-// export const useAppDispatch: () => AppDispatch = useDispatch;
-// export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
 
 interface Props {
   navigation: any;
@@ -98,7 +94,6 @@ export class Calendar extends Component<Props, State> {
   }
 
   onChangeTime(event: any, value: Date | any) {
-    // let formatedTempTime = value.getHours() + " : " + value.getMinutes();
     let formatedTempTime = moment(value).format("HH:mm");
     this.setState({
       time: value,
@@ -109,12 +104,11 @@ export class Calendar extends Component<Props, State> {
   }
 
   render() {
-    // const { dispatch: any } = this.props;
     const dateDispViewDate = moment(this.state.selectedStartDate).format(
       "DD/MM/YYYY"
     );
 
-    const navigateToDate = (date: string) => {
+    const navigateToDate = () => {
       navigation.navigate("ViewDate", {
         date: dateDispViewDate,
       });
@@ -133,14 +127,6 @@ export class Calendar extends Component<Props, State> {
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
-            <Button
-              title="View selected date"
-              onPress={() =>
-                navigation.navigate("ViewDate", {
-                  date: dateDispViewDate,
-                })
-              }
-            />
           </View>
           <Text style={styles.sectionTitle}>Calandar</Text>
         </View>
@@ -151,17 +137,40 @@ export class Calendar extends Component<Props, State> {
             selectedDayColor="#acc8d7"
           />
         </View>
-        <View style={{ marginLeft: 30, flexDirection: "column" }}>
-          <View style={{ marginLeft: 30, flexDirection: "row" }}>
-            <Text>SELECTED DATE: </Text>
-            <Text style={{ marginLeft: 30 }}>
-              {moment(startDate).format("DD/MM/YYYY")}
-            </Text>
+        <View style={styles.bottomCont}>
+          <View style={styles.bottomContChild}>
+            <View style={styles.bottomContLeft}>
+              <Text>SELECTED DATE: </Text>
+              <Text>{moment(startDate).format("DD/MM/YYYY")}</Text>
+            </View>
+            <View style={styles.bottomContRight}>
+              <Fontisto
+                onPress={() =>
+                  // navigation.navigate("ViewDate", {
+                  //   date: dateDispViewDate,
+                  // })
+                  navigateToDate()
+                }
+                name="zoom-plus"
+                size={34}
+                color="black"
+              />
+              {/* <Button
+                title="View selected date"
+                onPress={() =>
+                  navigation.navigate("ViewDate", {
+                    date: dateDispViewDate,
+                  })
+                }
+              /> */}
+            </View>
           </View>
-          <View style={{ marginLeft: 30, flexDirection: "row", width: "100%" }}>
-            <Text>SELECTED TIME: </Text>
-            <Text style={{ marginLeft: 30 }}>{this.state.text}</Text>
-            <View style={{ right: 0 }}>
+          <View style={styles.bottomContChild}>
+            <View style={styles.bottomContLeft}>
+              <Text>SELECTED TIME: </Text>
+              <Text>{this.state.text}</Text>
+            </View>
+            <View style={styles.bottomContRight}>
               <Button title="Select Time" onPress={() => this.openTime(true)} />
             </View>
           </View>
@@ -169,7 +178,7 @@ export class Calendar extends Component<Props, State> {
         <View>
           {this.state.show && (
             <DateTimePicker
-              style={styles.datePicker}
+              // style={styles.datePicker}
               value={this.state.time}
               mode="time"
               display={"default"}
@@ -227,5 +236,31 @@ const styles = StyleSheet.create({
   calandarCont: {
     marginTop: 20,
   },
-  datePicker: {},
+  bottomCont: {
+    // marginLeft: 30,
+    flexDirection: "column",
+    width: "100%",
+    // justifyContent: "space-evenly",
+  },
+  bottomContChild: {
+    paddingLeft: 15,
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
+    alignItems: "center",
+  },
+  bottomContLeft: {
+    // marginLeft: 30,
+    width: "50%",
+
+    flexDirection: "row",
+    justifyContent: "flex-start",
+  },
+  bottomContRight: {
+    paddingTop: 10,
+    width: "50%",
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    paddingRight: 15,
+  },
 });

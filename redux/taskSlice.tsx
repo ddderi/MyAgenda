@@ -4,19 +4,6 @@ import * as SQLite from "expo-sqlite";
 
 const db = SQLite.openDatabase("todos.db");
 
-// db.transaction((tx) => {
-//   tx.executeSql(
-//     `SELECT * FROM todos`,
-//     undefined,
-//     (txObj, resultSet) => {
-//       console.log("test", resultSet.rows._array);
-//     },
-//     (_, error): boolean | any => {
-//       console.warn(error);
-//     }
-//   );
-// });
-
 type Task = {
   id?: any;
   name: string;
@@ -114,8 +101,8 @@ const taskSlice = createSlice({
       }
     },
     setDateDisplay: (state, action) => {
-      console.log(action);
-      // state.dateDisplayed = action.payload
+      // console.log(action);
+      state.dateDisplayed = action.payload;
     },
   },
 });

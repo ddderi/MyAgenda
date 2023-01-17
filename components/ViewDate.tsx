@@ -21,6 +21,7 @@ import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import { Entypo } from "@expo/vector-icons";
 
 type Newtask = {
   id: number | undefined;
@@ -49,11 +50,9 @@ const ViewDate = (props: Props) => {
   );
 
   const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const IndexOfDay = moment(props.route.params.date, "DD/MM/YYYY").weekday();
+  const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
 
-  const taskFiltered = tasksArray.filter(
-    (task) => task.date == props.route.params.date
-  );
+  const taskFiltered = tasksArray.filter((task) => task.date == dateDisplayed);
 
   const taskMapped = taskFiltered.map((task) => (
     <Task
@@ -85,7 +84,7 @@ const ViewDate = (props: Props) => {
         name: task,
         done: 0,
         time: `${timeFormated(time)}`,
-        date: `${props.route.params.date}`,
+        date: `${dateDisplayed}`,
       };
       dispatch(addTask(newtask));
       dispatch(triggerLoading(true));
@@ -98,7 +97,7 @@ const ViewDate = (props: Props) => {
     <>
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
-          {datelocalStr == props.route.params.date ? (
+          {datelocalStr == dateDisplayed ? (
             <Text style={styles.sectionTitle}>Today's tasks</Text>
           ) : (
             <></>
@@ -117,7 +116,7 @@ const ViewDate = (props: Props) => {
               color="black"
             />
             <Text>
-              {dayOftheWeek[IndexOfDay]}, {props.route.params.date}
+              {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
             </Text>
             <AntDesign
               onPress={() =>
@@ -147,8 +146,8 @@ const ViewDate = (props: Props) => {
               onChangeText={(text) => setTask(text)}
             />
             <TouchableOpacity onPress={() => handleAddTask()}>
-              <View style={styles.addWrapper}>
-                <Text style={styles.addText}>+</Text>
+              <View>
+                <Entypo name="add-to-list" size={50} color="black" />
               </View>
             </TouchableOpacity>
           </KeyboardAvoidingView>
@@ -170,9 +169,6 @@ const ViewDate = (props: Props) => {
     </>
   );
 };
-{
-  /* <Text>{props.route.params.date.toString()}</Text> */
-}
 
 const styles = StyleSheet.create({
   container: {

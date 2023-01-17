@@ -17,6 +17,7 @@ import {
 } from "react-redux";
 import moment from "moment";
 import { RootState } from "../../redux/store";
+import { Entypo } from "@expo/vector-icons";
 (moment as any).suppressDeprecationWarnings = true;
 
 type Props = {
@@ -61,11 +62,6 @@ const InputTask = (props: Props) => {
       done: 0,
       time: `${timeFormated(props.time)}` || `${timeFormated(new Date())}`,
       date: `${dateCondition(props.dateDisp)}`,
-
-      // date: `${dateToday(props.date)}` || `${dateDisplayed}`,
-
-      // totalDate(props.date, props.date, props.date) ||
-      // totalDate(new Date(), new Date(), new Date()),
     };
     console.log(props.dateDisp);
     dispatch(addTask(newtask));
@@ -88,8 +84,9 @@ const InputTask = (props: Props) => {
         onChangeText={(text) => setTask(text)}
       />
       <TouchableOpacity onPress={() => handleAddTask()}>
-        <View style={styles.addWrapper}>
-          <Text style={styles.addText}>+</Text>
+        <View>
+          {/* <Text style={styles.addText}>+</Text> */}
+          <Entypo name="add-to-list" size={50} color="black" />
         </View>
       </TouchableOpacity>
     </KeyboardAvoidingView>

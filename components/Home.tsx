@@ -7,6 +7,7 @@ import {
   View,
   Platform,
   Keyboard,
+  Button,
 } from "react-native";
 import Task from "./features/Task";
 import React, { useState, useEffect } from "react";
@@ -19,6 +20,7 @@ import {
   changeDateDisplay,
   loadTasks,
   triggerLoading,
+  setDateDisplay,
 } from "../redux/taskSlice";
 import { RootState } from "../redux/store";
 import uuid from "react-native-uuid";
@@ -50,21 +52,9 @@ const Home: React.FC = () => {
   const stateLoaded = useSelector(
     (state: RootState) => state.tasks.needToBeLoaded
   );
-  // console.log(stateLoaded);
-  // db.transaction((tx) => {
-  //   tx.executeSql(`CREATE TABLE IF NOT EXISTS todos (
-  //     id INTEGER PRIMARY KEY AUTOINCREMENT,
-  //     name TEXT,
-  //     done INTEGER DEFAULT "0",
-  //     time TEXT,
-  //     date TEXT `);
-  // });
-  // console.log(tasksArray);
-  // const datecopy = new Date(dateDisplayed);
+
   const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
-
-  // console.log("date redux now", newd);
 
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
@@ -101,36 +91,17 @@ const Home: React.FC = () => {
         "SELECT * FROM todos",
         x,
         (txObj, resultSet: any) => {
-          // state.tasks.push(resultSet.rows._array);
           dispatch(loadTasks(resultSet.rows._array));
-          // state.tasks = resultSet.rows._array;
-          // console.log("test", resultSet.rows._array);
         },
         (_, error): boolean | any => {
           console.warn(error);
         }
       );
     });
-
-    // dispatch(loadTasks(tasksArray));
+    console.log("home is rendering");
   }, []);
 
   useEffect(() => {
-    // db.transaction((tx) => {
-    //   tx.executeSql(
-    //     "SELECT * FROM todos",
-    //     null,
-    //     (txObj, resultSet: any) => {
-    //       // state.tasks.push(resultSet.rows._array);
-    //       dispatch(loadTasks(resultSet.rows._array));
-    //       // state.tasks = resultSet.rows._array;
-    //       console.log("test", resultSet.rows._array);
-    //     },
-    //     (_, error): boolean | any => {
-    //       console.warn(error);
-    //     }
-    //   );
-    // });
     if (stateLoaded === true) {
       let x: any = null;
       db.transaction((tx) => {
@@ -138,12 +109,14 @@ const Home: React.FC = () => {
           "SELECT * FROM todos",
           x,
           (txObj, resultSet: any) => {
+            console.log("error", typeof resultSet);
             // state.tasks.push(resultSet.rows._array);
             dispatch(loadTasks(resultSet.rows._array));
             // state.tasks = resultSet.rows._array;
             // console.log("test", resultSet.rows._array);
           },
           (_, error): boolean | any => {
+            console.log("error", typeof error);
             console.warn(error);
           }
         );
@@ -161,9 +134,22 @@ const Home: React.FC = () => {
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
           </View>
-          <Text style={styles.sectionTitle}>
-            {datelocalStr == dateDisplayed ? `Today's tasks` : <></>}
-          </Text>
+          {datelocalStr == dateDisplayed ? (
+            <View>
+              <Text style={styles.sectionTitle}>Today's tasks</Text>
+            </View>
+          ) : (
+            <View style={{ marginTop: 10 }}>
+              <Button
+                title="Back to today"
+                onPress={() =>
+                  dispatch(
+                    setDateDisplay(moment(new Date()).format("DD/MM/YYYY"))
+                  )
+                }
+              />
+            </View>
+          )}
         </View>
         <ScrollView>
           <View style={styles.arrowicon}>
