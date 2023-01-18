@@ -4,7 +4,7 @@
     "slug": "Todolist",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/todologo.png",
 
     "userInterfaceStyle": "light",
     "splash": {
@@ -21,7 +21,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/todologo.png",
         "backgroundColor": "#FFFFFF",
         "useNextNotificationsApi": true
       }

@@ -12,8 +12,6 @@ type Task = {
   date: string;
 };
 
-type dateDisplayedType = {};
-
 type TaskState = {
   tasks: Task[];
   dateDisplayed: string;

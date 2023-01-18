@@ -32,12 +32,12 @@ import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import * as SQLite from "expo-sqlite";
 
-type Newtask = {
-  id: number;
-  name: string;
-  done: number;
-  date: string;
-};
+// type Newtask = {
+//   id: number;
+//   name: string;
+//   done: number;
+//   date: string;
+// };
 
 const Home: React.FC = () => {
   const db = SQLite.openDatabase("todos.db");
@@ -85,6 +85,10 @@ const Home: React.FC = () => {
       );
     });
 
+    // console.log(datelocalStr);
+    // console.log(dateDisplayed);
+    // console.log("test", dateDisplayed > datelocalStr);
+
     db.transaction((tx) => {
       let x: any = null;
       tx.executeSql(
@@ -98,7 +102,6 @@ const Home: React.FC = () => {
         }
       );
     });
-    console.log("home is rendering");
   }, []);
 
   useEffect(() => {
@@ -110,10 +113,7 @@ const Home: React.FC = () => {
           x,
           (txObj, resultSet: any) => {
             console.log("error", typeof resultSet);
-            // state.tasks.push(resultSet.rows._array);
             dispatch(loadTasks(resultSet.rows._array));
-            // state.tasks = resultSet.rows._array;
-            // console.log("test", resultSet.rows._array);
           },
           (_, error): boolean | any => {
             console.log("error", typeof error);
@@ -134,6 +134,7 @@ const Home: React.FC = () => {
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
           </View>
+          <>{console.log("test", dateDisplayed > datelocalStr)}</>
           {datelocalStr == dateDisplayed ? (
             <View>
               <Text style={styles.sectionTitle}>Today's tasks</Text>
