@@ -53,7 +53,11 @@ const Settings = () => {
       const cancelNotif = async () => {
         try {
           let IdNotif: any = await AsyncStorage.getItem("IDNOTIF");
-          await Notification.cancelScheduledNotificationAsync(IdNotif);
+
+          // Pour supprimer une Notifications specifique
+
+          // await Notification.cancelScheduledNotificationAsync(IdNotif);
+          await Notification.cancelAllScheduledNotificationsAsync();
         } catch (error) {
           console.log("error deleting id", error);
         }
@@ -102,41 +106,44 @@ const Settings = () => {
             <AntDesign name="menufold" size={34} color="black" />
           </TouchableOpacity>
         </View>
-        <View style={styles.toggle}>
-          <Text>Enabled/Disabled notifications</Text>
-          <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
-        </View>
-        <View style={styles.options}>
-          <Text>
-            Time for notification :
-            {!isEnabled ? "Notification disabled" : timeString}
-          </Text>
-          <View style={styles.iconstyle}>
-            <Ionicons
-              name="ios-time-outline"
-              size={24}
-              color="black"
-              onPress={() => setShow(true)}
+        <View style={styles.wrapper}>
+          <View style={styles.toggle}>
+            <Text>Notifications</Text>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
             />
           </View>
-        </View>
-        <View>
-          {show && (
-            <DateTimePicker
-              value={time}
-              mode="time"
-              display={"default"}
-              is24Hour={true}
-              minuteInterval={1}
-              onChange={onChangeTime}
-            />
-          )}
+          <View style={styles.options}>
+            <Text>Time for notification :</Text>
+
+            <View style={styles.iconstyle}>
+              <View style={{ paddingRight: 10 }}>
+                <Text>{!isEnabled ? "Disabled" : timeString}</Text>
+              </View>
+              <Ionicons
+                name="ios-time-outline"
+                size={30}
+                color="black"
+                onPress={() => setShow(true)}
+              />
+            </View>
+          </View>
+          <View>
+            {show && (
+              <DateTimePicker
+                value={time}
+                mode="time"
+                display={"default"}
+                is24Hour={true}
+                minuteInterval={1}
+                onChange={onChangeTime}
+              />
+            )}
+          </View>
         </View>
       </View>
     </View>
@@ -160,10 +167,9 @@ const styles = StyleSheet.create({
   },
   options: {
     flexDirection: "row",
-    // backgroundColor: "red",
     marginTop: 10,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   toggle: {
@@ -174,6 +180,16 @@ const styles = StyleSheet.create({
   },
   iconstyle: {
     marginLeft: 10,
+    marginRight: 11,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  wrapperOptions: {
+    // flex: 1,
+    flexDirection: "column",
+  },
+  wrapper: {
+    paddingHorizontal: 40,
   },
 });
 

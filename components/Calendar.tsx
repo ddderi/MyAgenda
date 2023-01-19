@@ -12,14 +12,8 @@ import CalendarPicker from "react-native-calendar-picker";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import InputTask from "./features/InputTask";
-import { useNavigation } from "@react-navigation/native";
 import { setDateDisplay } from "../redux/taskSlice";
-import {
-  useDispatch,
-  useSelector,
-  Provider as ReduxProvider,
-  connect,
-} from "react-redux";
+import { connect } from "react-redux";
 import { Dispatch } from "redux";
 
 interface Props {
@@ -36,16 +30,11 @@ type State = {
   dateDisplayed: boolean;
 };
 
-const datenow = new Date();
-const dateToday = moment();
-
 export class Calendar extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       selectedStartDate: new Date(),
-      // selectedStartDate: moment(dateToday, "DD-MM-YYYY"),
-      // selectedStartDate: moment(dateToday, "DD-MM-YYYY").add(1, "days"),
       time: new Date(),
       show: false,
       text: "None",
@@ -83,7 +72,6 @@ export class Calendar extends Component<Props, State> {
   onDateChange(date: any) {
     this.setState({
       selectedStartDate: date,
-      // show: true,
     });
   }
 
@@ -119,7 +107,6 @@ export class Calendar extends Component<Props, State> {
     const { navigation } = this.props;
     const { selectedStartDate } = this.state;
     const startDate = selectedStartDate ? selectedStartDate : "";
-    // const navigation = useNavigation();
     return (
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
@@ -134,7 +121,7 @@ export class Calendar extends Component<Props, State> {
           <CalendarPicker
             onDateChange={this.onDateChange}
             minDate={minDate}
-            selectedDayColor="#acc8d7"
+            selectedDayColor="#2196f3"
           />
         </View>
         <View style={styles.bottomCont}>
@@ -145,24 +132,11 @@ export class Calendar extends Component<Props, State> {
             </View>
             <View style={styles.bottomContRight}>
               <Fontisto
-                onPress={() =>
-                  // navigation.navigate("ViewDate", {
-                  //   date: dateDispViewDate,
-                  // })
-                  navigateToDate()
-                }
+                onPress={() => navigateToDate()}
                 name="zoom-plus"
                 size={34}
                 color="black"
               />
-              {/* <Button
-                title="View selected date"
-                onPress={() =>
-                  navigation.navigate("ViewDate", {
-                    date: dateDispViewDate,
-                  })
-                }
-              /> */}
             </View>
           </View>
           <View style={styles.bottomContChild}>
@@ -178,7 +152,6 @@ export class Calendar extends Component<Props, State> {
         <View>
           {this.state.show && (
             <DateTimePicker
-              // style={styles.datePicker}
               value={this.state.time}
               mode="time"
               display={"default"}
@@ -231,16 +204,13 @@ const styles = StyleSheet.create({
   sectionTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    // textAlign: 'center',
   },
   calandarCont: {
     marginTop: 20,
   },
   bottomCont: {
-    // marginLeft: 30,
     flexDirection: "column",
     width: "100%",
-    // justifyContent: "space-evenly",
   },
   bottomContChild: {
     paddingLeft: 15,
@@ -250,7 +220,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bottomContLeft: {
-    // marginLeft: 30,
     width: "50%",
 
     flexDirection: "row",

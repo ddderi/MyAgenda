@@ -10,11 +10,7 @@ import {
 } from "react-native";
 import Task from "./features/Task";
 import React, { useState, useEffect } from "react";
-import {
-  useDispatch,
-  useSelector,
-  Provider as ReduxProvider,
-} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeDateDisplay, triggerLoading, addTask } from "../redux/taskSlice";
 import { RootState } from "../redux/store";
 import { AntDesign } from "@expo/vector-icons";
@@ -22,6 +18,7 @@ import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Entypo } from "@expo/vector-icons";
+import ButtonCustom from "./features/ButtonCustom";
 
 type Newtask = {
   id: number | undefined;
@@ -98,9 +95,13 @@ const ViewDate = (props: Props) => {
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
           {datelocalStr == dateDisplayed ? (
-            <Text style={styles.sectionTitle}>Today's tasks</Text>
+            <View style={styles.todaytitle}>
+              <Text style={styles.sectionTitle}>Today's tasks</Text>
+            </View>
           ) : (
-            <></>
+            <View style={styles.buttonback}>
+              <ButtonCustom />
+            </View>
           )}
         </View>
         <ScrollView>
@@ -130,11 +131,6 @@ const ViewDate = (props: Props) => {
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
         <View>
-          {/* <InputTaskViewDate
-            date={props.route.params.date}
-            setShow={setShow}
-            time={time}
-          /> */}
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={styles.writeTaskWrapper}
@@ -174,7 +170,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 50,
+    // paddingTop: 1,
   },
   writeTaskWrapper: {
     position: "absolute",
@@ -247,6 +243,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   datePicker: {},
+  buttonback: {
+    marginTop: 5,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    height: 35,
+  },
+  todaytitle: {
+    marginTop: 5,
+    height: 35,
+  },
 });
 
 export default ViewDate;

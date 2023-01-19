@@ -11,11 +11,7 @@ import {
 } from "react-native";
 import Task from "./features/Task";
 import React, { useState, useEffect } from "react";
-import {
-  useDispatch,
-  useSelector,
-  Provider as ReduxProvider,
-} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   changeDateDisplay,
   loadTasks,
@@ -23,7 +19,6 @@ import {
   setDateDisplay,
 } from "../redux/taskSlice";
 import { RootState } from "../redux/store";
-import uuid from "react-native-uuid";
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
@@ -31,7 +26,7 @@ import InputTask from "./features/InputTask";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import * as SQLite from "expo-sqlite";
-
+import ButtonCustom from "./features/ButtonCustom";
 // type Newtask = {
 //   id: number;
 //   name: string;
@@ -85,9 +80,19 @@ const Home: React.FC = () => {
       );
     });
 
-    // console.log(datelocalStr);
-    // console.log(dateDisplayed);
-    // console.log("test", dateDisplayed > datelocalStr);
+    db.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM todos WHERE date < ?",
+        [datelocalStr],
+        (txObj, resultSet: any) => {
+          console.log(resultSet.rows._array);
+          // dispatch(loadTasks(resultSet.rows._array));
+        },
+        (_, error): boolean | any => {
+          console.warn(error);
+        }
+      );
+    });
 
     db.transaction((tx) => {
       let x: any = null;
@@ -112,11 +117,9 @@ const Home: React.FC = () => {
           "SELECT * FROM todos",
           x,
           (txObj, resultSet: any) => {
-            console.log("error", typeof resultSet);
             dispatch(loadTasks(resultSet.rows._array));
           },
           (_, error): boolean | any => {
-            console.log("error", typeof error);
             console.warn(error);
           }
         );
@@ -134,21 +137,13 @@ const Home: React.FC = () => {
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
           </View>
-          <>{console.log("test", dateDisplayed > datelocalStr)}</>
           {datelocalStr == dateDisplayed ? (
-            <View>
+            <View style={styles.todaytitle}>
               <Text style={styles.sectionTitle}>Today's tasks</Text>
             </View>
           ) : (
-            <View style={{ marginTop: 10 }}>
-              <Button
-                title="Back to today"
-                onPress={() =>
-                  dispatch(
-                    setDateDisplay(moment(new Date()).format("DD/MM/YYYY"))
-                  )
-                }
-              />
+            <View style={styles.buttonback}>
+              <ButtonCustom />
             </View>
           )}
         </View>
@@ -253,6 +248,16 @@ const styles = StyleSheet.create({
     borderRadius: 60,
     height: 50,
     alignItems: "center",
+  },
+  buttonback: {
+    marginTop: 5,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    height: 35,
+  },
+  todaytitle: {
+    marginTop: 5,
+    height: 35,
   },
 });
 
