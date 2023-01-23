@@ -101,11 +101,11 @@ const Settings = () => {
   return (
     <View style={styles.container}>
       <View style={styles.taskWrapper}>
-        <View style={styles.menuicon}>
+        {/* <View style={styles.menuicon}>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <AntDesign name="menufold" size={34} color="black" />
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View style={styles.wrapper}>
           <View style={styles.toggle}>
             <Text>Notifications</Text>

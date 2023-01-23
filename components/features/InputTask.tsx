@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -27,6 +27,7 @@ type Props = {
   showinput: boolean;
   date: Date;
   dateDisp: boolean;
+  ref: any;
 };
 
 type Newtask = {
@@ -37,7 +38,7 @@ type Newtask = {
   date: string;
 };
 
-const InputTask = (props: Props) => {
+const InputTask = React.forwardRef((props: Props, ref: any) => {
   const [task, setTask] = useState<string>("");
   const dispatch = useDispatch();
 
@@ -72,26 +73,29 @@ const InputTask = (props: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      style={styles.writeTaskWrapper}
-    >
-      <TextInput
-        maxLength={30}
-        style={styles.input}
-        placeholder={"Add a task..."}
-        value={task}
-        onChangeText={(text) => setTask(text)}
-      />
-      <TouchableOpacity onPress={() => handleAddTask()}>
-        <View>
-          {/* <Text style={styles.addText}>+</Text> */}
-          <Entypo name="add-to-list" size={50} color="black" />
-        </View>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+    <View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.writeTaskWrapper}
+      >
+        <TextInput
+          ref={ref}
+          maxLength={30}
+          style={styles.input}
+          placeholder={"Add a task..."}
+          value={task}
+          onChangeText={(text) => setTask(text)}
+        />
+        <TouchableOpacity onPress={() => handleAddTask()}>
+          <View>
+            {/* <Text style={styles.addText}>+</Text> */}
+            <Entypo name="add-to-list" size={50} color="black" />
+          </View>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
+    </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {

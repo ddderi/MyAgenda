@@ -9,6 +9,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import ViewDate from "./components/ViewDate";
 import * as Notifications from "expo-notifications";
 import { isDevice } from "expo-device";
+import AppNavigator from "./components/AppNavigator";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -87,8 +88,9 @@ const App: React.FC = () => {
 
   return (
     <ReduxProvider store={store}>
-      <NavigationContainer>
-        <RootStack.Navigator>
+      {/* <NavigationContainer> */}
+      <AppNavigator />
+      {/* <RootStack.Navigator>
           <RootStack.Screen
             name="DrawerNavigator"
             component={DrawerNavigator}
@@ -97,8 +99,8 @@ const App: React.FC = () => {
             }}
           />
           <RootStack.Screen name="ViewDate" component={ViewDate} />
-        </RootStack.Navigator>
-      </NavigationContainer>
+        </RootStack.Navigator> */}
+      {/* </NavigationContainer> */}
     </ReduxProvider>
   );
 };

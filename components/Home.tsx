@@ -10,7 +10,7 @@ import {
   Button,
 } from "react-native";
 import Task from "./features/Task";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeDateDisplay,
@@ -27,20 +27,16 @@ import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import * as SQLite from "expo-sqlite";
 import ButtonCustom from "./features/ButtonCustom";
-// type Newtask = {
-//   id: number;
-//   name: string;
-//   done: number;
-//   date: string;
-// };
+import { Entypo } from "@expo/vector-icons";
 
 const Home: React.FC = () => {
+  const [inputDisplay, setInputDisplay] = useState<boolean>(false);
   const db = SQLite.openDatabase("todos.db");
   const datelocal = new Date();
   const datelocalStr = moment(datelocal).format("DD/MM/YYYY");
   const dispatch = useDispatch();
-  const dateFormated = new Date();
   const tasksArray = useSelector((state: RootState) => state.tasks.tasks);
+
   const dateDisplayed = useSelector(
     (state: RootState) => state.tasks.dateDisplayed
   );
@@ -55,6 +51,7 @@ const Home: React.FC = () => {
 
   const [dateDisp, setDateDisp] = useState<boolean>(true);
   const [showinput, setShowinput] = useState<boolean>(false);
+  const inputRef = React.createRef<any>();
 
   const resetState = () => {};
 
@@ -132,11 +129,11 @@ const Home: React.FC = () => {
     <>
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
-          <View style={styles.menuicon}>
+          {/* <View style={styles.menuicon}>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
           {datelocalStr == dateDisplayed ? (
             <View style={styles.todaytitle}>
               <Text style={styles.sectionTitle}>Today's tasks</Text>
@@ -173,16 +170,29 @@ const Home: React.FC = () => {
           </View>
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
-        <View>
-          <InputTask
-            showInputTask={showInputTask}
-            time={datelocal}
-            showinput={showinput}
-            resetState={resetState}
-            date={dateFormated}
-            dateDisp={dateDisp}
-          />
-        </View>
+        {!inputDisplay && (
+          <TouchableOpacity onPress={() => inputRef.current.focus()}>
+            <View style={styles.buttoninput}>
+              {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
+              <View style={styles.buttonborder}>
+                <Entypo name="add-to-list" size={50} color="white" />
+              </View>
+            </View>
+          </TouchableOpacity>
+        )}
+        {inputDisplay && (
+          <View>
+            <InputTask
+              ref={inputRef}
+              showInputTask={showInputTask}
+              time={datelocal}
+              showinput={showinput}
+              resetState={resetState}
+              date={datelocal}
+              dateDisp={dateDisp}
+            />
+          </View>
+        )}
       </View>
     </>
   );
@@ -192,7 +202,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 50,
+    // paddingTop: 20,
   },
   taskWrapper: {
     flexDirection: "column",
@@ -258,6 +268,28 @@ const styles = StyleSheet.create({
   todaytitle: {
     marginTop: 5,
     height: 35,
+  },
+  buttoninput: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 5,
+    marginHorizontal: 3,
+    paddingRight: 10,
+    paddingBottom: 10,
+    // borderColor: "black",
+    // borderWidth: 2,
+    // borderRadius: 60,
+  },
+  buttonborder: {
+    height: 70,
+    width: 70,
+    backgroundColor: "#2196f3",
+    justifyContent: "center",
+    alignItems: "center",
+    // borderColor: "black",
+    // borderWidth: 2,
+    borderRadius: 60,
   },
 });
 

@@ -1,11 +1,10 @@
 {
   "expo": {
     "name": "Todolist",
-    "slug": "Todolist",
+    "slug": "my-agenda-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/todologo.png",
-
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -15,19 +14,28 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "MyAgenda"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/todologo.png",
-        "backgroundColor": "#FFFFFF",
-        "useNextNotificationsApi": true
-      }
+        "backgroundColor": "#FFFFFF"
+      },
+      "package": "com.dorken.Todolist"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "fa042724-d9e7-4882-9a27-e629f146b794"
+      }
+    },
+    "owner": "dorken"
   }
 }

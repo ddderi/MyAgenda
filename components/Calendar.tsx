@@ -110,11 +110,11 @@ export class Calendar extends Component<Props, State> {
     return (
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
-          <View style={styles.menuicon}>
+          {/* <View style={styles.menuicon}>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
-          </View>
+          </View> */}
           <Text style={styles.sectionTitle}>Calandar</Text>
         </View>
         <View style={styles.calandarCont}>

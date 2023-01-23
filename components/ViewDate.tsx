@@ -34,6 +34,7 @@ type Props = {
 
 const ViewDate = (props: Props) => {
   const datelocal = new Date();
+  const [inputDisplay, setInputDisplay] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const [time, setTime] = useState<Date>(new Date());
   const [task, setTask] = useState<string>("");
@@ -130,24 +131,35 @@ const ViewDate = (props: Props) => {
           </View>
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
-        <View>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.writeTaskWrapper}
-          >
-            <TextInput
-              style={styles.input}
-              placeholder={"Add a task..."}
-              value={task}
-              onChangeText={(text) => setTask(text)}
-            />
-            <TouchableOpacity onPress={() => handleAddTask()}>
-              <View>
-                <Entypo name="add-to-list" size={50} color="black" />
+        {!inputDisplay && (
+          <View style={styles.buttoninput}>
+            <TouchableOpacity onPress={() => setInputDisplay(true)}>
+              <View style={styles.buttonborder}>
+                <Entypo name="add-to-list" size={50} color="white" />
               </View>
             </TouchableOpacity>
-          </KeyboardAvoidingView>
-        </View>
+          </View>
+        )}
+        {inputDisplay && (
+          <View>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={styles.writeTaskWrapper}
+            >
+              <TextInput
+                style={styles.input}
+                placeholder={"Add a task..."}
+                value={task}
+                onChangeText={(text) => setTask(text)}
+              />
+              <TouchableOpacity onPress={() => handleAddTask()}>
+                <View>
+                  <Entypo name="add-to-list" size={50} color="black" />
+                </View>
+              </TouchableOpacity>
+            </KeyboardAvoidingView>
+          </View>
+        )}
         <View>
           {show && (
             <DateTimePicker
@@ -252,6 +264,28 @@ const styles = StyleSheet.create({
   todaytitle: {
     marginTop: 5,
     height: 35,
+  },
+  buttoninput: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    marginBottom: 5,
+    marginHorizontal: 3,
+    paddingRight: 10,
+    paddingBottom: 10,
+    // borderColor: "black",
+    // borderWidth: 2,
+    // borderRadius: 60,
+  },
+  buttonborder: {
+    height: 70,
+    width: 70,
+    backgroundColor: "#2196f3",
+    justifyContent: "center",
+    alignItems: "center",
+    // borderColor: "black",
+    // borderWidth: 2,
+    borderRadius: 60,
   },
 });
 
