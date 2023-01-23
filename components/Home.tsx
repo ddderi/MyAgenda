@@ -171,14 +171,15 @@ const Home: React.FC = () => {
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
         {!inputDisplay && (
-          <TouchableOpacity onPress={() => inputRef.current.focus()}>
-            <View style={styles.buttoninput}>
-              {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
-              <View style={styles.buttonborder}>
-                <Entypo name="add-to-list" size={50} color="white" />
-              </View>
-            </View>
-          </TouchableOpacity>
+          <></>
+          // <TouchableOpacity onPress={() => inputRef.current.focus()}>
+          //   <View style={styles.buttoninput}>
+          //     {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
+          //     <View style={styles.buttonborder}>
+          //       <Entypo name="add-to-list" size={50} color="white" />
+          //     </View>
+          //   </View>
+          // </TouchableOpacity>
         )}
         {inputDisplay && (
           <View>

@@ -32,7 +32,6 @@ const StackNavigatorCalendar = () => {
   const RootStack = createStackNavigator<RootStackParamList>();
 
   return (
-    // <NavigationContainer>
     <RootStack.Navigator>
       <RootStack.Screen
         name="CalendarWrapper"
@@ -49,37 +48,7 @@ const StackNavigatorCalendar = () => {
         }}
       />
     </RootStack.Navigator>
-    // </NavigationContainer>
   );
-};
-
-// const DrawerNavigator = () => {
-//   const Drawer = createDrawerNavigator<ParamListBase>();
-
-//   return (
-//     <Drawer.Navigator
-//       drawerContent={(props) => <CustomDrawer {...props} />}
-//       screenOptions={{ headerShown: false }}
-//       initialRouteName="Home"
-//     >
-//       {/* <Drawer.Screen name="Home" component={Home} /> */}
-//       {/* <Drawer.Screen name="Calendar" component={CalandarWrapper} /> */}
-//       <Drawer.Screen name="Settings" component={Settings} />
-//       {/* <Drawer.Screen name="BottomNav" component={BottomNav} /> */}
-//     </Drawer.Navigator>
-//   );
-// };
-
-const AddTasksButtonCustom = ({ children, onPress }) => {
-  <TouchableOpacity style={styles.buttoninput}>
-    {/* <TouchableOpacity onPress={() => inputRef.current.focus()}> */}
-
-    {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
-    <View style={styles.buttonborder}>
-      {children}
-      {/* <Entypo name="add-to-list" size={50} color="white" /> */}
-    </View>
-  </TouchableOpacity>;
 };
 
 const BottomNav = () => {
@@ -145,23 +114,21 @@ const BottomNav = () => {
         component={Statistic}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
-            <Entypo name="add-to-list" size={50} color="white" />
+            <Entypo name="add-to-list" size={50} color="black" />
           ),
-          tabBarButton: (props) => {
-            // <TouchableOpacity style={styles.buttoninput}>
-            {
-              /* <TouchableOpacity onPress={() => inputRef.current.focus()}> */
-            }
+          tabBarButton: (props) => (
+            <View style={styles.buttoninput}>
+              <TouchableOpacity>
+                {/* <TouchableOpacity onPress={() => inputRef.current.focus()}> */}
 
-            {
-              /* <TouchableOpacity onPress={() => setInputDisplay(true)}> */
-            }
-            <View style={styles.buttonborder}>
-              {/* {children} */}
-              {/* <Entypo name="add-to-list" size={50} color="white" /> */}
-            </View>;
-            // </TouchableOpacity>;
-          },
+                {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
+                <View style={styles.buttonborder}>
+                  <Entypo name="add-to-list" size={50} color="white" />
+                  {/* <Entypo name="add-to-list" size={50} color="white" /> */}
+                </View>
+              </TouchableOpacity>
+            </View>
+          ),
         }}
       />
       <Tab.Screen
@@ -208,13 +175,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: 5,
-    marginHorizontal: 3,
-    paddingRight: 10,
-    paddingBottom: 10,
-    // borderColor: "black",
-    // borderWidth: 2,
-    // borderRadius: 60,
+    // elevation: 5,
   },
   buttonborder: {
     height: 70,
@@ -225,6 +186,7 @@ const styles = StyleSheet.create({
     // borderColor: "black",
     // borderWidth: 2,
     borderRadius: 60,
+    elevation: 5,
   },
 });
 
