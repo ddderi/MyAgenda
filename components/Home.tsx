@@ -13,29 +13,43 @@ import Task from "./features/Task";
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addTask,
   changeDateDisplay,
   loadTasks,
   triggerLoading,
-  setDateDisplay,
+  setInputRef,
 } from "../redux/taskSlice";
 import { RootState } from "../redux/store";
 import { AntDesign } from "@expo/vector-icons";
-import { useNavigation, ParamListBase } from "@react-navigation/native";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
-import InputTask from "./features/InputTask";
 import moment from "moment";
 import { ScrollView } from "react-native-gesture-handler";
 import * as SQLite from "expo-sqlite";
 import ButtonCustom from "./features/ButtonCustom";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 
-const Home: React.FC = () => {
-  const [inputDisplay, setInputDisplay] = useState<boolean>(false);
+type Newtask = {
+  id: number | undefined;
+  name: string;
+  done: number;
+  time: string;
+  date: string;
+};
+
+const Home = React.forwardRef((props, ref: any) => {
+  //
+  const [task, setTask] = useState<string>("");
+
+  //
+
   const db = SQLite.openDatabase("todos.db");
   const datelocal = new Date();
   const datelocalStr = moment(datelocal).format("DD/MM/YYYY");
   const dispatch = useDispatch();
   const tasksArray = useSelector((state: RootState) => state.tasks.tasks);
+
+  const inputDisplayRef = useSelector(
+    (state: RootState) => state.tasks.inputRef
+  );
 
   const dateDisplayed = useSelector(
     (state: RootState) => state.tasks.dateDisplayed
@@ -47,11 +61,18 @@ const Home: React.FC = () => {
   const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
 
-  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
-
   const [dateDisp, setDateDisp] = useState<boolean>(true);
-  const [showinput, setShowinput] = useState<boolean>(false);
-  const inputRef = React.createRef<any>();
+
+  const inputRef = useRef<any>("");
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  useEffect(() => {
+    if (inputDisplayRef) {
+      focusInput();
+    }
+  }, [inputDisplayRef, inputRef]);
 
   const resetState = () => {};
 
@@ -70,6 +91,33 @@ const Home: React.FC = () => {
     />
   ));
 
+  const handleAddTask = () => {
+    Keyboard.dismiss();
+    const dateCondition = (dateDisp: boolean) => {
+      if (dateDisp) {
+        return dateDisplayed;
+      } else if (!dateDisp) {
+        return dateToday(datelocal);
+      }
+    };
+    const dateToday = (date: Date) => moment(date).format("DD/MM/YYYY");
+    const timeFormated = (time: Date) => moment(time).format("HH:mm");
+    const newtask: Newtask = {
+      id: undefined,
+      name: task,
+      done: 0,
+      // to adapt
+      // time: `${timeFormated(time)}` || `${timeFormated(new Date())}`,
+      time: `${timeFormated(new Date())}`,
+      date: `${dateCondition(dateDisp)}`,
+    };
+    dispatch(addTask(newtask));
+    dispatch(triggerLoading(true));
+    setTask("");
+    showInputTask();
+    resetState();
+  };
+
   useEffect(() => {
     db.transaction((tx) => {
       tx.executeSql(
@@ -83,7 +131,6 @@ const Home: React.FC = () => {
         [datelocalStr],
         (txObj, resultSet: any) => {
           console.log(resultSet.rows._array);
-          // dispatch(loadTasks(resultSet.rows._array));
         },
         (_, error): boolean | any => {
           console.warn(error);
@@ -129,11 +176,6 @@ const Home: React.FC = () => {
     <>
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
-          {/* <View style={styles.menuicon}>
-            <TouchableOpacity onPress={() => navigation.openDrawer()}>
-              <AntDesign name="menufold" size={34} color="black" />
-            </TouchableOpacity>
-          </View> */}
           {datelocalStr == dateDisplayed ? (
             <View style={styles.todaytitle}>
               <Text style={styles.sectionTitle}>Today's tasks</Text>
@@ -170,34 +212,39 @@ const Home: React.FC = () => {
           </View>
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
-        {!inputDisplay && (
-          <></>
-          // <TouchableOpacity onPress={() => inputRef.current.focus()}>
-          //   <View style={styles.buttoninput}>
-          //     {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
-          //     <View style={styles.buttonborder}>
-          //       <Entypo name="add-to-list" size={50} color="white" />
-          //     </View>
-          //   </View>
-          // </TouchableOpacity>
-        )}
-        {inputDisplay && (
+        {inputDisplayRef && (
           <View>
-            <InputTask
-              ref={inputRef}
-              showInputTask={showInputTask}
-              time={datelocal}
-              showinput={showinput}
-              resetState={resetState}
-              date={datelocal}
-              dateDisp={dateDisp}
-            />
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={styles.writeTaskWrapper}
+            >
+              <TextInput
+                ref={inputRef}
+                maxLength={30}
+                style={styles.input}
+                placeholder={"Add a task..."}
+                value={task}
+                onChangeText={(text) => setTask(text)}
+                autoFocus={true}
+                onBlur={() => dispatch(setInputRef(false))}
+              />
+              <View
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 80,
+                }}
+              >
+                <TouchableOpacity onPress={() => handleAddTask()}>
+                  <Ionicons name="arrow-up-circle" size={55} color="#2196f3" />
+                </TouchableOpacity>
+              </View>
+            </KeyboardAvoidingView>
           </View>
         )}
       </View>
     </>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
@@ -214,28 +261,34 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
   },
-  menuicon: {
-    flexDirection: "row",
-    justifyContent: "flex-end",
-  },
   items: {
     marginTop: 10,
     paddingHorizontal: 40,
   },
+  test: {
+    elevation: 20,
+  },
   writeTaskWrapper: {
+    elevation: 20,
     position: "absolute",
-    bottom: 60,
+    bottom: 0,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
+    backgroundColor: "D3D3D3",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   input: {
+    bottom: 0,
+    elevation: 20,
+    marginVertical: 10,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    width: "70%",
-    backgroundColor: "#D3D3D3",
-    borderRadius: 60,
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 15,
     borderColor: "black",
     borderWidth: 1,
   },

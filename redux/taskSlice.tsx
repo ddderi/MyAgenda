@@ -16,12 +16,14 @@ type TaskState = {
   tasks: Task[];
   dateDisplayed: string;
   needToBeLoaded: boolean;
+  inputRef: boolean;
 };
 
 const initialState: TaskState = {
   tasks: [],
   dateDisplayed: moment(new Date()).format("DD/MM/YYYY"),
   needToBeLoaded: false,
+  inputRef: false,
 };
 
 const taskSlice = createSlice({
@@ -44,9 +46,7 @@ const taskSlice = createSlice({
             action.payload.date,
             action.payload.done,
           ],
-          (txObj, resultSet) => {
-            // console.log("lui jveu voir", action.payload);
-          },
+          (txObj, resultSet) => {},
           (_, error): boolean | any => {
             console.warn(error);
           }
@@ -99,8 +99,10 @@ const taskSlice = createSlice({
       }
     },
     setDateDisplay: (state, action) => {
-      // console.log(action);
       state.dateDisplayed = action.payload;
+    },
+    setInputRef: (state, action) => {
+      state.inputRef = action.payload;
     },
   },
 });
@@ -113,6 +115,7 @@ export const {
   loadTasks,
   triggerLoading,
   setDateDisplay,
+  setInputRef,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

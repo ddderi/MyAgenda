@@ -10,7 +10,9 @@ import { AntDesign } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
 import moment from "moment";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { setInputRef } from "../redux/taskSlice";
 import { Entypo } from "@expo/vector-icons";
 import {
   TouchableHighlight,
@@ -55,15 +57,14 @@ const BottomNav = () => {
   const dispatch = useDispatch();
   const Tab = createBottomTabNavigator();
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
-
-  const navigateToTasks = () => {
-    navigation.navigate("Home");
-    dispatch(setDateDisplay(moment(new Date()).format("DD/MM/YYYY")));
-  };
+  const inputDisplayRef = useSelector(
+    (state: RootState) => state.tasks.inputRef
+  );
 
   return (
     <Tab.Navigator
       screenOptions={{
+        tabBarHideOnKeyboard: true,
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: {
@@ -73,6 +74,7 @@ const BottomNav = () => {
           right: 20,
           borderRadius: 15,
           height: 60,
+          elevation: inputDisplayRef ? -1 : 8,
         },
       }}
     >
@@ -118,7 +120,7 @@ const BottomNav = () => {
           ),
           tabBarButton: (props) => (
             <View style={styles.buttoninput}>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => dispatch(setInputRef(true))}>
                 {/* <TouchableOpacity onPress={() => inputRef.current.focus()}> */}
 
                 {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
@@ -162,6 +164,10 @@ const BottomNav = () => {
 };
 
 const AppNavigator = () => {
+  const inputDisplayRef = useSelector(
+    (state: RootState) => state.tasks.inputRef
+  );
+
   return (
     <NavigationContainer>
       <BottomNav />
@@ -186,7 +192,7 @@ const styles = StyleSheet.create({
     // borderColor: "black",
     // borderWidth: 2,
     borderRadius: 60,
-    elevation: 5,
+    // elevation: 0,
   },
 });
 
