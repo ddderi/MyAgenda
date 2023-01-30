@@ -153,13 +153,17 @@ const Settings = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+
     paddingTop: 50,
   },
   taskWrapper: {
+    marginTop: 50,
     flexDirection: "column",
+    backgroundColor: "#acc8d7",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    marginHorizontal: 20,
+    borderRadius: 15,
+    paddingBottom: 25,
   },
   menuicon: {
     flexDirection: "row",

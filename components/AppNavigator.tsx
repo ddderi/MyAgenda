@@ -25,12 +25,14 @@ import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import Statistic from "./Statistic";
 
-const StackNavigatorCalendar = () => {
+const StackNavigatorCalendar = (navigation: any) => {
   type RootStackParamList = {
     CalendarWrapper: undefined;
     ViewDate: { date: Date };
   };
 
+  const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const IndexOfDay = (date: Date) => moment(date, "DD/MM/YYYY").weekday();
   const RootStack = createStackNavigator<RootStackParamList>();
 
   return (
@@ -39,15 +41,20 @@ const StackNavigatorCalendar = () => {
         name="CalendarWrapper"
         component={CalandarWrapper}
         options={{
-          headerShown: false,
+          title: "Calendar",
+          // headerShown: false,
         }}
       />
       <RootStack.Screen
         name="ViewDate"
         component={ViewDate}
-        options={{
-          headerShown: false,
-        }}
+        options={({ route }) => ({
+          title: `${
+            dayOftheWeek[IndexOfDay(route.params.date)]
+          }, ${route.params.date.toString()}`,
+        })}
+        // title: "my date",
+        // headerShown: false,
       />
     </RootStack.Navigator>
   );

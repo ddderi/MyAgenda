@@ -228,15 +228,22 @@ const Home = React.forwardRef((props, ref: any) => {
                 autoFocus={true}
                 onBlur={() => dispatch(setInputRef(false))}
               />
-              <View
-                style={{
-                  backgroundColor: "white",
-                  borderRadius: 80,
-                }}
-              >
-                <TouchableOpacity onPress={() => handleAddTask()}>
-                  <Ionicons name="arrow-up-circle" size={55} color="#2196f3" />
-                </TouchableOpacity>
+              <View>
+                <View
+                  style={{
+                    position: "absolute",
+                    right: -20,
+                    bottom: -30,
+                  }}
+                >
+                  <TouchableOpacity onPress={() => handleAddTask()}>
+                    <Ionicons
+                      name="arrow-up-circle"
+                      size={55}
+                      color="#2196f3"
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
             </KeyboardAvoidingView>
           </View>
@@ -269,27 +276,27 @@ const styles = StyleSheet.create({
     elevation: 20,
   },
   writeTaskWrapper: {
-    elevation: 20,
+    elevation: 10,
     position: "absolute",
     bottom: 0,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "D3D3D3",
+    backgroundColor: "#E3E4E7",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
   },
   input: {
     bottom: 0,
-    elevation: 20,
+    elevation: 10,
     marginVertical: 10,
     paddingVertical: 15,
     paddingHorizontal: 15,
     width: "80%",
     backgroundColor: "white",
     borderRadius: 15,
-    borderColor: "black",
+    borderColor: "#E3E4E7",
     borderWidth: 1,
   },
   addText: {},

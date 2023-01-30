@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Platform,
   Button,
+  ScrollView,
 } from "react-native";
 import React, { Component } from "react";
 import { AntDesign, Fontisto } from "@expo/vector-icons";
@@ -108,70 +109,75 @@ export class Calendar extends Component<Props, State> {
     const { selectedStartDate } = this.state;
     const startDate = selectedStartDate ? selectedStartDate : "";
     return (
-      <View style={styles.container}>
-        <View style={styles.taskWrapper}>
+      <ScrollView>
+        <View style={styles.container}>
+          {/* <View style={styles.taskWrapper}> */}
           {/* <View style={styles.menuicon}>
             <TouchableOpacity onPress={() => navigation.openDrawer()}>
               <AntDesign name="menufold" size={34} color="black" />
             </TouchableOpacity>
           </View> */}
-          <Text style={styles.sectionTitle}>Calandar</Text>
-        </View>
-        <View style={styles.calandarCont}>
-          <CalendarPicker
-            onDateChange={this.onDateChange}
-            minDate={minDate}
-            selectedDayColor="#2196f3"
-          />
-        </View>
-        <View style={styles.bottomCont}>
-          <View style={styles.bottomContChild}>
-            <View style={styles.bottomContLeft}>
-              <Text>SELECTED DATE: </Text>
-              <Text>{moment(startDate).format("DD/MM/YYYY")}</Text>
+          {/* <Text style={styles.sectionTitle}>Calandar</Text> */}
+          {/* </View> */}
+          <View style={styles.calandarCont}>
+            <CalendarPicker
+              onDateChange={this.onDateChange}
+              minDate={minDate}
+              selectedDayColor="#2196f3"
+            />
+          </View>
+          <View style={styles.bottomCont}>
+            <View style={styles.bottomContChild}>
+              <View style={styles.bottomContLeft}>
+                <Text>SELECTED DATE: </Text>
+                <Text>{moment(startDate).format("DD/MM/YYYY")}</Text>
+              </View>
+              <View style={styles.bottomContRight}>
+                <Fontisto
+                  onPress={() => navigateToDate()}
+                  name="zoom-plus"
+                  size={34}
+                  color="black"
+                />
+              </View>
             </View>
-            <View style={styles.bottomContRight}>
-              <Fontisto
-                onPress={() => navigateToDate()}
-                name="zoom-plus"
-                size={34}
-                color="black"
+            <View style={styles.bottomContChild}>
+              <View style={styles.bottomContLeft}>
+                <Text>SELECTED TIME: </Text>
+                <Text>{this.state.text}</Text>
+              </View>
+              <View style={styles.bottomContRight}>
+                <Button
+                  title="Select Time"
+                  onPress={() => this.openTime(true)}
+                />
+              </View>
+            </View>
+          </View>
+          <View>
+            {this.state.show && (
+              <DateTimePicker
+                value={this.state.time}
+                mode="time"
+                display={"default"}
+                is24Hour={true}
+                minuteInterval={30}
+                onChange={this.onChangeTime}
               />
-            </View>
+            )}
           </View>
-          <View style={styles.bottomContChild}>
-            <View style={styles.bottomContLeft}>
-              <Text>SELECTED TIME: </Text>
-              <Text>{this.state.text}</Text>
-            </View>
-            <View style={styles.bottomContRight}>
-              <Button title="Select Time" onPress={() => this.openTime(true)} />
-            </View>
-          </View>
-        </View>
-        <View>
-          {this.state.show && (
-            <DateTimePicker
-              value={this.state.time}
-              mode="time"
-              display={"default"}
-              is24Hour={true}
-              minuteInterval={30}
-              onChange={this.onChangeTime}
+          {this.state.showinput && (
+            <InputTask
+              showInputTask={this.showInputTask}
+              time={this.state.time}
+              showinput={this.state.showinput}
+              resetState={this.resetState}
+              date={this.state.selectedStartDate}
+              dateDisp={this.state.dateDisplayed}
             />
           )}
         </View>
-        {this.state.showinput && (
-          <InputTask
-            showInputTask={this.showInputTask}
-            time={this.state.time}
-            showinput={this.state.showinput}
-            resetState={this.resetState}
-            date={this.state.selectedStartDate}
-            dateDisp={this.state.dateDisplayed}
-          />
-        )}
-      </View>
+      </ScrollView>
     );
   }
 }

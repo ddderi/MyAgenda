@@ -9,9 +9,14 @@ import {
   Keyboard,
 } from "react-native";
 import Task from "./features/Task";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { changeDateDisplay, triggerLoading, addTask } from "../redux/taskSlice";
+import {
+  changeDateDisplay,
+  triggerLoading,
+  addTask,
+  setInputRef,
+} from "../redux/taskSlice";
 import { RootState } from "../redux/store";
 import { AntDesign } from "@expo/vector-icons";
 import moment from "moment";
@@ -19,6 +24,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Entypo } from "@expo/vector-icons";
 import ButtonCustom from "./features/ButtonCustom";
+import { Ionicons } from "@expo/vector-icons";
 
 type Newtask = {
   id: number | undefined;
@@ -47,11 +53,15 @@ const ViewDate = (props: Props) => {
     (state: RootState) => state.tasks.dateDisplayed
   );
 
+  const inputDisplayRef = useSelector(
+    (state: RootState) => state.tasks.inputRef
+  );
+
   const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
 
   const taskFiltered = tasksArray.filter((task) => task.date == dateDisplayed);
-
+  // console.log("iam in view date", props.route);
   const taskMapped = taskFiltered.map((task) => (
     <Task
       id={task.id}
@@ -91,6 +101,17 @@ const ViewDate = (props: Props) => {
     }
   }, [taskFilled]);
 
+  const inputRef = useRef<any>("");
+  const focusInput = () => {
+    inputRef.current.focus();
+  };
+
+  useEffect(() => {
+    if (inputDisplayRef) {
+      focusInput();
+    }
+  }, [inputDisplayRef, inputRef]);
+
   return (
     <>
       <View style={styles.container}>
@@ -100,13 +121,11 @@ const ViewDate = (props: Props) => {
               <Text style={styles.sectionTitle}>Today's tasks</Text>
             </View>
           ) : (
-            <View style={styles.buttonback}>
-              <ButtonCustom />
-            </View>
+            <View style={styles.buttonback}>{/* <ButtonCustom /> */}</View>
           )}
         </View>
         <ScrollView>
-          <View style={styles.arrowicon}>
+          {/* <View style={styles.arrowicon}>
             <AntDesign
               onPress={() =>
                 dispatch(
@@ -128,10 +147,47 @@ const ViewDate = (props: Props) => {
               size={30}
               color="black"
             />
-          </View>
+          </View> */}
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
-        {!inputDisplay && (
+        {inputDisplayRef && (
+          <View>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+              style={styles.writeTaskWrapper}
+            >
+              <TextInput
+                ref={inputRef}
+                maxLength={30}
+                style={styles.input}
+                placeholder={"Add a task..."}
+                value={task}
+                onChangeText={(text) => setTask(text)}
+                autoFocus={true}
+                onBlur={() => dispatch(setInputRef(false))}
+              />
+              <View>
+                <View
+                  style={{
+                    position: "absolute",
+                    right: -20,
+                    bottom: -30,
+                  }}
+                >
+                  <TouchableOpacity onPress={() => handleAddTask()}>
+                    <Ionicons
+                      name="arrow-up-circle"
+                      size={55}
+                      color="#2196f3"
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </KeyboardAvoidingView>
+          </View>
+        )}
+
+        {/* {!inputDisplay && (
           <View style={styles.buttoninput}>
             <TouchableOpacity onPress={() => setInputDisplay(true)}>
               <View style={styles.buttonborder}>
@@ -159,7 +215,7 @@ const ViewDate = (props: Props) => {
               </TouchableOpacity>
             </KeyboardAvoidingView>
           </View>
-        )}
+        )} */}
         <View>
           {show && (
             <DateTimePicker
@@ -185,16 +241,16 @@ const styles = StyleSheet.create({
     // paddingTop: 1,
   },
   writeTaskWrapper: {
+    elevation: 10,
     position: "absolute",
     bottom: 0,
-    height: 90,
     width: "100%",
     flexDirection: "row",
     justifyContent: "space-around",
     alignItems: "center",
-    backgroundColor: "white",
-    borderTopWidth: 2,
-    borderTopColor: "black",
+    backgroundColor: "#E3E4E7",
+    borderTopLeftRadius: 15,
+    borderTopRightRadius: 15,
   },
   taskWrapper: {
     flexDirection: "column",
@@ -222,12 +278,15 @@ const styles = StyleSheet.create({
   //   alignItems: "center",
   // },
   input: {
+    bottom: 0,
+    elevation: 10,
+    marginVertical: 10,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    width: "70%",
-    backgroundColor: "#D3D3D3",
-    borderRadius: 60,
-    borderColor: "black",
+    width: "80%",
+    backgroundColor: "white",
+    borderRadius: 15,
+    borderColor: "#E3E4E7",
     borderWidth: 1,
   },
   addText: {

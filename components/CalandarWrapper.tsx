@@ -3,7 +3,7 @@ import Calendar from "./Calendar";
 import { useNavigation, ParamListBase } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 
-const CalandarWrapper = () => {
+const CalandarWrapper = (route: any) => {
   const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
   return <Calendar navigation={navigation} />;
