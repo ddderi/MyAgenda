@@ -57,11 +57,10 @@ const ViewDate = (props: Props) => {
     (state: RootState) => state.tasks.inputRef
   );
 
-  const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
+  // const dayOftheWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  // const IndexOfDay = moment(dateDisplayed, "DD/MM/YYYY").weekday();
 
   const taskFiltered = tasksArray.filter((task) => task.date == dateDisplayed);
-  // console.log("iam in view date", props.route);
   const taskMapped = taskFiltered.map((task) => (
     <Task
       id={task.id}
@@ -116,38 +115,20 @@ const ViewDate = (props: Props) => {
     <>
       <View style={styles.container}>
         <View style={styles.taskWrapper}>
-          {datelocalStr == dateDisplayed ? (
-            <View style={styles.todaytitle}>
-              <Text style={styles.sectionTitle}>Today's tasks</Text>
-            </View>
-          ) : (
-            <View style={styles.buttonback}>{/* <ButtonCustom /> */}</View>
-          )}
+          {
+            datelocalStr == dateDisplayed ? (
+              <View style={styles.todaytitle}>
+                <Text style={styles.sectionTitle}>Today's tasks</Text>
+              </View>
+            ) : (
+              <></>
+            )
+            // (
+            //   <View style={styles.buttonback}>{/* <ButtonCustom /> */}</View>
+            // )
+          }
         </View>
         <ScrollView>
-          {/* <View style={styles.arrowicon}>
-            <AntDesign
-              onPress={() =>
-                dispatch(
-                  changeDateDisplay({ dateDisplayed, action: "subtract" })
-                )
-              }
-              name="leftcircleo"
-              size={30}
-              color="black"
-            />
-            <Text>
-              {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
-            </Text>
-            <AntDesign
-              onPress={() =>
-                dispatch(changeDateDisplay({ dateDisplayed, action: "add" }))
-              }
-              name="rightcircleo"
-              size={30}
-              color="black"
-            />
-          </View> */}
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
         {inputDisplayRef && (
@@ -186,36 +167,6 @@ const ViewDate = (props: Props) => {
             </KeyboardAvoidingView>
           </View>
         )}
-
-        {/* {!inputDisplay && (
-          <View style={styles.buttoninput}>
-            <TouchableOpacity onPress={() => setInputDisplay(true)}>
-              <View style={styles.buttonborder}>
-                <Entypo name="add-to-list" size={50} color="white" />
-              </View>
-            </TouchableOpacity>
-          </View>
-        )}
-        {inputDisplay && (
-          <View>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-              style={styles.writeTaskWrapper}
-            >
-              <TextInput
-                style={styles.input}
-                placeholder={"Add a task..."}
-                value={task}
-                onChangeText={(text) => setTask(text)}
-              />
-              <TouchableOpacity onPress={() => handleAddTask()}>
-                <View>
-                  <Entypo name="add-to-list" size={50} color="black" />
-                </View>
-              </TouchableOpacity>
-            </KeyboardAvoidingView>
-          </View>
-        )} */}
         <View>
           {show && (
             <DateTimePicker

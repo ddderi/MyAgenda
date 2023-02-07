@@ -171,10 +171,6 @@ const BottomNav = () => {
 };
 
 const AppNavigator = () => {
-  const inputDisplayRef = useSelector(
-    (state: RootState) => state.tasks.inputRef
-  );
-
   return (
     <NavigationContainer>
       <BottomNav />
@@ -188,7 +184,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    // elevation: 5,
   },
   buttonborder: {
     height: 70,
@@ -196,10 +191,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#2196f3",
     justifyContent: "center",
     alignItems: "center",
-    // borderColor: "black",
-    // borderWidth: 2,
     borderRadius: 60,
-    // elevation: 0,
+    elevation: 10,
   },
 });
 

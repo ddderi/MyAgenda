@@ -90,7 +90,7 @@ const InputTask = React.forwardRef((props: Props, ref: any) => {
         style={styles.writeTaskWrapper}
       >
         <TextInput
-          ref={inputRef}
+          ref={ref}
           maxLength={30}
           style={styles.input}
           placeholder={"Add a task..."}

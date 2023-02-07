@@ -74,7 +74,7 @@ const taskSlice = createSlice({
           "UPDATE todos SET done = ? WHERE id = ?",
           [!action.payload.done, action.payload.id],
           (txObj, resultSet) => {
-            console.log(resultSet);
+            // console.log(resultSet);
           },
           (_, error): boolean | any => {
             console.warn(error);

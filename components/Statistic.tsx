@@ -7,15 +7,15 @@ const Statistic = (props: Props) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.top}>
-        <Text>Tasks Overview</Text>
+        <Text style={styles.title}>Tasks Overview</Text>
       </View>
       <View style={styles.middle}>
         <View style={styles.topLeft}>
-          <Text>0</Text>
+          <Text style={styles.numberStyle}>0</Text>
           <Text>Completed Tasks</Text>
         </View>
         <View style={styles.topRight}>
-          <Text>0</Text>
+          <Text style={styles.numberStyle}>0</Text>
           <Text>Pending Tasks</Text>
         </View>
       </View>
@@ -33,14 +33,23 @@ const styles = StyleSheet.create({
     marginTop: 50,
     // justifyContent: "space-evenly",
     height: "100%",
-    paddingHorizontal: 30,
+    paddingHorizontal: 15,
   },
   top: {
     backgroundColor: "#acc8d7",
-    height: "5%",
+    height: 50,
     marginTop: 20,
     borderRadius: 15,
     paddingLeft: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+  },
+  numberStyle: {
+    fontSize: 50,
   },
   topLeft: {
     width: "45%",

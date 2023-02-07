@@ -74,10 +74,6 @@ const Home = React.forwardRef((props, ref: any) => {
     }
   }, [inputDisplayRef, inputRef]);
 
-  const resetState = () => {};
-
-  const showInputTask = () => {};
-
   const taskFiltered = tasksArray.filter((task) => task.date == dateDisplayed);
 
   const taskMapped = taskFiltered.map((task) => (
@@ -114,8 +110,6 @@ const Home = React.forwardRef((props, ref: any) => {
     dispatch(addTask(newtask));
     dispatch(triggerLoading(true));
     setTask("");
-    showInputTask();
-    resetState();
   };
 
   useEffect(() => {
@@ -186,30 +180,35 @@ const Home = React.forwardRef((props, ref: any) => {
             </View>
           )}
         </View>
-        <ScrollView>
-          <View style={styles.arrowicon}>
+
+        <View style={styles.arrowicon}>
+          <View style={styles.iconStyle}>
             <AntDesign
               onPress={() =>
                 dispatch(
                   changeDateDisplay({ dateDisplayed, action: "subtract" })
                 )
               }
-              name="leftcircleo"
+              name="leftcircle"
               size={30}
-              color="black"
+              color="#2196f3"
             />
-            <Text>
-              {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
-            </Text>
+          </View>
+          <Text>
+            {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
+          </Text>
+          <View style={styles.iconStyle}>
             <AntDesign
               onPress={() =>
                 dispatch(changeDateDisplay({ dateDisplayed, action: "add" }))
               }
-              name="rightcircleo"
+              name="rightcircle"
               size={30}
-              color="black"
+              color="#2196f3"
             />
           </View>
+        </View>
+        <ScrollView>
           <View style={styles.items}>{taskMapped}</View>
         </ScrollView>
         {inputDisplayRef && (
@@ -254,6 +253,9 @@ const Home = React.forwardRef((props, ref: any) => {
 });
 
 const styles = StyleSheet.create({
+  iconStyle: {
+    elevation: 50,
+  },
   container: {
     flex: 1,
     backgroundColor: "#fff",
@@ -271,9 +273,6 @@ const styles = StyleSheet.create({
   items: {
     marginTop: 10,
     paddingHorizontal: 40,
-  },
-  test: {
-    elevation: 20,
   },
   writeTaskWrapper: {
     elevation: 10,
@@ -310,12 +309,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   arrowicon: {
+    elevation: 8,
     marginTop: 10,
     marginHorizontal: 15,
     paddingHorizontal: 20,
     flexDirection: "row",
     justifyContent: "space-between",
-    borderWidth: 2,
+    backgroundColor: "white",
+    // borderWidth: 0.1,
     borderRadius: 60,
     height: 50,
     alignItems: "center",

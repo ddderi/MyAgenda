@@ -99,62 +99,85 @@ const Settings = () => {
   }, []);
 
   return (
+    // <View style={styles.container}>
     <View style={styles.container}>
-      <View style={styles.taskWrapper}>
-        {/* <View style={styles.menuicon}>
+      <View style={styles.top}>
+        <Text style={styles.title}>Settings</Text>
+      </View>
+      {/* <View style={styles.menuicon}>
           <TouchableOpacity onPress={() => navigation.openDrawer()}>
             <AntDesign name="menufold" size={34} color="black" />
           </TouchableOpacity>
         </View> */}
-        <View style={styles.wrapper}>
-          <View style={styles.toggle}>
-            <Text>Notifications</Text>
-            <Switch
-              trackColor={{ false: "#767577", true: "#81b0ff" }}
-              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-              ios_backgroundColor="#3e3e3e"
-              onValueChange={toggleSwitch}
-              value={isEnabled}
+      <View style={styles.wrapper}>
+        <View style={styles.toggle}>
+          <Text>Notifications</Text>
+          <Switch
+            trackColor={{ false: "#767577", true: "#81b0ff" }}
+            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+            ios_backgroundColor="#3e3e3e"
+            onValueChange={toggleSwitch}
+            value={isEnabled}
+          />
+        </View>
+        <View style={styles.options}>
+          <Text>Time for notification :</Text>
+
+          <View style={styles.iconstyle}>
+            <View style={{ paddingRight: 10 }}>
+              <Text>{!isEnabled ? "Disabled" : timeString}</Text>
+            </View>
+            <Ionicons
+              name="ios-time-outline"
+              size={30}
+              color="black"
+              onPress={() => setShow(true)}
             />
           </View>
-          <View style={styles.options}>
-            <Text>Time for notification :</Text>
-
-            <View style={styles.iconstyle}>
-              <View style={{ paddingRight: 10 }}>
-                <Text>{!isEnabled ? "Disabled" : timeString}</Text>
-              </View>
-              <Ionicons
-                name="ios-time-outline"
-                size={30}
-                color="black"
-                onPress={() => setShow(true)}
-              />
-            </View>
-          </View>
-          <View>
-            {show && (
-              <DateTimePicker
-                value={time}
-                mode="time"
-                display={"default"}
-                is24Hour={true}
-                minuteInterval={1}
-                onChange={onChangeTime}
-              />
-            )}
-          </View>
+        </View>
+        <View>
+          {show && (
+            <DateTimePicker
+              value={time}
+              mode="time"
+              display={"default"}
+              is24Hour={true}
+              minuteInterval={1}
+              onChange={onChangeTime}
+            />
+          )}
         </View>
       </View>
     </View>
+    // </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
 
-    paddingTop: 50,
+    // paddingTop: 50,
+    flex: 1,
+    flexDirection: "column",
+    marginTop: 50,
+    // justifyContent: "space-evenly",
+    height: "100%",
+    paddingHorizontal: 15,
+  },
+  top: {
+    backgroundColor: "#acc8d7",
+    height: 50,
+    marginBottom: 20,
+    marginTop: 20,
+    borderRadius: 15,
+    paddingLeft: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
   },
   taskWrapper: {
     marginTop: 50,
@@ -172,6 +195,7 @@ const styles = StyleSheet.create({
   options: {
     flexDirection: "row",
     marginTop: 10,
+    marginBottom: 10,
     width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
@@ -193,7 +217,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   wrapper: {
+    backgroundColor: "#acc8d7",
     paddingHorizontal: 40,
+    borderRadius: 15,
+    paddingBottom: 20,
   },
 });
 

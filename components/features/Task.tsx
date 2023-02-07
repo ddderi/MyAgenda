@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+    elevation: 8,
   },
   containerdone: {
     backgroundColor: "#DFF5CE",
@@ -84,6 +85,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 10,
+    elevation: 8,
   },
   task: {
     maxWidth: "80%",

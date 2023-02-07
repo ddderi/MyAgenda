@@ -17,7 +17,7 @@ const ButtonCustom = () => {
     >
       <View style={styles.buttonfeatures}>
         <View>
-          <Entypo name="back" size={24} color="white" />
+          <Entypo name="back" size={24} color="black" />
         </View>
         <View>
           <Text style={styles.text}>Back</Text>
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     width: 120,
     borderRadius: 4,
-    elevation: 3,
-    backgroundColor: "black",
+    elevation: 10,
+    backgroundColor: "white",
     height: 35,
   },
   text: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     fontWeight: "bold",
     letterSpacing: 0.25,
-    color: "white",
+    color: "black",
   },
   buttonback: {
     marginTop: 5,
