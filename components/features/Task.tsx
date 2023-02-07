@@ -68,7 +68,7 @@ const Task: React.FC<{
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#acc8d7",
+    backgroundColor: "#f0f0f0",
     padding: 15,
     borderRadius: 10,
     flexDirection: "row",

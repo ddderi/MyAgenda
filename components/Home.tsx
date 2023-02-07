@@ -8,6 +8,7 @@ import {
   Platform,
   Keyboard,
   Button,
+  SafeAreaView,
 } from "react-native";
 import Task from "./features/Task";
 import React, { useState, useEffect, useRef } from "react";
@@ -26,6 +27,7 @@ import { ScrollView } from "react-native-gesture-handler";
 import * as SQLite from "expo-sqlite";
 import ButtonCustom from "./features/ButtonCustom";
 import { Ionicons } from "@expo/vector-icons";
+import Swipelist from "react-native-swipe-list-view";
 
 type Newtask = {
   id: number | undefined;
@@ -167,88 +169,80 @@ const Home = React.forwardRef((props, ref: any) => {
   }, [stateLoaded]);
 
   return (
-    <>
-      <View style={styles.container}>
-        <View style={styles.taskWrapper}>
-          {datelocalStr == dateDisplayed ? (
-            <View style={styles.todaytitle}>
-              <Text style={styles.sectionTitle}>Today's tasks</Text>
-            </View>
-          ) : (
-            <View style={styles.buttonback}>
-              <ButtonCustom />
-            </View>
-          )}
-        </View>
-
-        <View style={styles.arrowicon}>
-          <View style={styles.iconStyle}>
-            <AntDesign
-              onPress={() =>
-                dispatch(
-                  changeDateDisplay({ dateDisplayed, action: "subtract" })
-                )
-              }
-              name="leftcircle"
-              size={30}
-              color="#2196f3"
-            />
+    <View style={styles.container}>
+      <View style={styles.taskWrapper}>
+        {datelocalStr == dateDisplayed ? (
+          <View style={styles.todaytitle}>
+            <Text style={styles.sectionTitle}>Today's tasks</Text>
           </View>
-          <Text>
-            {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
-          </Text>
-          <View style={styles.iconStyle}>
-            <AntDesign
-              onPress={() =>
-                dispatch(changeDateDisplay({ dateDisplayed, action: "add" }))
-              }
-              name="rightcircle"
-              size={30}
-              color="#2196f3"
-            />
-          </View>
-        </View>
-        <ScrollView>
-          <View style={styles.items}>{taskMapped}</View>
-        </ScrollView>
-        {inputDisplayRef && (
-          <View>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
-              style={styles.writeTaskWrapper}
-            >
-              <TextInput
-                ref={inputRef}
-                maxLength={30}
-                style={styles.input}
-                placeholder={"Add a task..."}
-                value={task}
-                onChangeText={(text) => setTask(text)}
-                autoFocus={true}
-                onBlur={() => dispatch(setInputRef(false))}
-              />
-              <View>
-                <View
-                  style={{
-                    position: "absolute",
-                    right: -20,
-                    bottom: -30,
-                  }}
-                >
-                  <TouchableOpacity onPress={() => handleAddTask()}>
-                    <Ionicons
-                      name="arrow-up-circle"
-                      size={55}
-                      color="#2196f3"
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </KeyboardAvoidingView>
+        ) : (
+          <View style={styles.buttonback}>
+            <ButtonCustom />
           </View>
         )}
       </View>
-    </>
+
+      <View style={styles.arrowicon}>
+        <View style={styles.iconStyle}>
+          <AntDesign
+            onPress={() =>
+              dispatch(changeDateDisplay({ dateDisplayed, action: "subtract" }))
+            }
+            name="leftcircle"
+            size={30}
+            color="#2196f3"
+          />
+        </View>
+        <Text>
+          {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
+        </Text>
+        <View style={styles.iconStyle}>
+          <AntDesign
+            onPress={() =>
+              dispatch(changeDateDisplay({ dateDisplayed, action: "add" }))
+            }
+            name="rightcircle"
+            size={30}
+            color="#2196f3"
+          />
+        </View>
+      </View>
+      <ScrollView>
+        <View style={styles.items}>{taskMapped}</View>
+      </ScrollView>
+      {inputDisplayRef && (
+        <View>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.writeTaskWrapper}
+          >
+            <TextInput
+              ref={inputRef}
+              maxLength={30}
+              style={styles.input}
+              placeholder={"Add a task..."}
+              value={task}
+              onChangeText={(text) => setTask(text)}
+              autoFocus={true}
+              onBlur={() => dispatch(setInputRef(false))}
+            />
+            <View>
+              <View
+                style={{
+                  position: "absolute",
+                  right: -20,
+                  bottom: -30,
+                }}
+              >
+                <TouchableOpacity onPress={() => handleAddTask()}>
+                  <Ionicons name="arrow-up-circle" size={55} color="#2196f3" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </KeyboardAvoidingView>
+        </View>
+      )}
+    </View>
   );
 });
 
@@ -273,6 +267,7 @@ const styles = StyleSheet.create({
   items: {
     marginTop: 10,
     paddingHorizontal: 40,
+    marginBottom: 105,
   },
   writeTaskWrapper: {
     elevation: 10,

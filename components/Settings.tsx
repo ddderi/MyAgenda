@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     // paddingTop: 50,
     flex: 1,
     flexDirection: "column",
-    marginTop: 50,
+    marginTop: 20,
     // justifyContent: "space-evenly",
     height: "100%",
     paddingHorizontal: 15,
@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     justifyContent: "center",
     alignItems: "center",
+    elevation: 8,
   },
   title: {
     fontSize: 20,
@@ -221,6 +222,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 15,
     paddingBottom: 20,
+    elevation: 8,
   },
 });
 

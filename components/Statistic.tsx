@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: "column",
-    marginTop: 50,
+    marginTop: 20,
     // justifyContent: "space-evenly",
     height: "100%",
     paddingHorizontal: 15,
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     justifyContent: "center",
     alignItems: "center",
+    elevation: 8,
   },
   title: {
     fontSize: 20,
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     paddingBottom: 5,
+    elevation: 8,
   },
   topRight: {
     justifyContent: "flex-end",
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#acc8d7",
     borderRadius: 15,
     paddingBottom: 5,
+    elevation: 8,
   },
   middle: {
     flexDirection: "row",
@@ -80,6 +83,7 @@ const styles = StyleSheet.create({
     height: "15%",
     marginTop: 20,
     borderRadius: 15,
+    elevation: 8,
   },
 });
 
