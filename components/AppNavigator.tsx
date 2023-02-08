@@ -43,6 +43,11 @@ const StackNavigatorCalendar = (navigation: any) => {
         options={{
           title: "Calendar",
           // headerShown: false,
+          headerTitleStyle: {
+            fontFamily: "sans-serif",
+            fontSize: 22,
+            fontWeight: "bold",
+          },
         }}
       />
       <RootStack.Screen

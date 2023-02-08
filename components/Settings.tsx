@@ -99,33 +99,41 @@ const Settings = () => {
   }, []);
 
   return (
-    // <View style={styles.container}>
     <View style={styles.container}>
       <View style={styles.top}>
         <Text style={styles.title}>Settings</Text>
       </View>
-      {/* <View style={styles.menuicon}>
-          <TouchableOpacity onPress={() => navigation.openDrawer()}>
-            <AntDesign name="menufold" size={34} color="black" />
-          </TouchableOpacity>
-        </View> */}
       <View style={styles.wrapper}>
         <View style={styles.toggle}>
-          <Text>Notifications</Text>
-          <Switch
-            trackColor={{ false: "#767577", true: "#81b0ff" }}
-            thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
-            ios_backgroundColor="#3e3e3e"
-            onValueChange={toggleSwitch}
-            value={isEnabled}
-          />
+          <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>
+            Notifications
+          </Text>
+          <View style={{ width: "45%" }}>
+            <Switch
+              trackColor={{ false: "#767577", true: "#81b0ff" }}
+              thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
+              ios_backgroundColor="#3e3e3e"
+              onValueChange={toggleSwitch}
+              value={isEnabled}
+            />
+          </View>
         </View>
         <View style={styles.options}>
-          <Text>Time for notification :</Text>
+          <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>
+            Reminder tasks :
+          </Text>
 
           <View style={styles.iconstyle}>
-            <View style={{ paddingRight: 10 }}>
-              <Text>{!isEnabled ? "Disabled" : timeString}</Text>
+            <View style={{ paddingRight: 5 }}>
+              <Text
+                style={{
+                  fontFamily: "sans-serif",
+                  fontSize: 22,
+                  fontWeight: "bold",
+                }}
+              >
+                {!isEnabled ? "Disabled" : timeString}
+              </Text>
             </View>
             <Ionicons
               name="ios-time-outline"
@@ -149,19 +157,14 @@ const Settings = () => {
         </View>
       </View>
     </View>
-    // </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
-
-    // paddingTop: 50,
     flex: 1,
     flexDirection: "column",
     marginTop: 20,
-    // justifyContent: "space-evenly",
     height: "100%",
     paddingHorizontal: 15,
   },
@@ -177,7 +180,8 @@ const styles = StyleSheet.create({
     elevation: 8,
   },
   title: {
-    fontSize: 20,
+    fontFamily: "sans-serif",
+    fontSize: 22,
     fontWeight: "bold",
   },
   taskWrapper: {
@@ -198,13 +202,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   toggle: {
     marginTop: 30,
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   iconstyle: {
@@ -214,12 +218,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   wrapperOptions: {
-    // flex: 1,
     flexDirection: "column",
   },
   wrapper: {
     backgroundColor: "#acc8d7",
-    paddingHorizontal: 40,
+    paddingHorizontal: 10,
     borderRadius: 15,
     paddingBottom: 20,
     elevation: 8,

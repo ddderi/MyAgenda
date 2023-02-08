@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import moment from "moment";
 import * as SQLite from "expo-sqlite";
+import { State } from "react-native-gesture-handler";
 
 const db = SQLite.openDatabase("todos.db");
 
@@ -17,6 +18,8 @@ type TaskState = {
   dateDisplayed: string;
   needToBeLoaded: boolean;
   inputRef: boolean;
+  tasksCompleted: Task[];
+  tasksPending: Task[];
 };
 
 const initialState: TaskState = {
@@ -24,6 +27,8 @@ const initialState: TaskState = {
   dateDisplayed: moment(new Date()).format("DD/MM/YYYY"),
   needToBeLoaded: false,
   inputRef: false,
+  tasksCompleted: [],
+  tasksPending: [],
 };
 
 const taskSlice = createSlice({
@@ -104,6 +109,12 @@ const taskSlice = createSlice({
     setInputRef: (state, action) => {
       state.inputRef = action.payload;
     },
+    loadCompletedTasks: (state, action) => {
+      state.tasksCompleted = action.payload;
+    },
+    loadPendingTasks: (state, action) => {
+      state.tasksPending = action.payload;
+    },
   },
 });
 
@@ -116,6 +127,8 @@ export const {
   triggerLoading,
   setDateDisplay,
   setInputRef,
+  loadCompletedTasks,
+  loadPendingTasks,
 } = taskSlice.actions;
 
 export default taskSlice.reducer;

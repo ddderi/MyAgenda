@@ -171,13 +171,19 @@ export class Calendar extends Component<Props, State> {
             onDateChange={this.onDateChange}
             minDate={minDate}
             selectedDayColor="#2196f3"
+            textStyle={{
+              fontFamily: "sans-serif",
+              fontSize: 18,
+            }}
           />
         </View>
         <View style={styles.bottomCont}>
           <View style={styles.bottomContChild}>
             <View style={styles.bottomContLeft}>
-              <Text>SELECTED DATE: </Text>
-              <Text>{moment(startDate).format("DD/MM/YYYY")}</Text>
+              {/* <Text>SELECTED DATE: </Text> */}
+              <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>
+                {moment(startDate).format("DD/MM/YYYY")}
+              </Text>
             </View>
             <View style={styles.bottomContRight}>
               <Fontisto
@@ -190,11 +196,19 @@ export class Calendar extends Component<Props, State> {
           </View>
           <View style={styles.bottomContChild}>
             <View style={styles.bottomContLeft}>
-              <Text>SELECTED TIME: </Text>
-              <Text>{this.state.text}</Text>
+              {/* <Text>SELECTED TIME: </Text> */}
+              <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>
+                {this.state.text}
+              </Text>
             </View>
             <View style={styles.bottomContRight}>
-              <Button title="Select Time" onPress={() => this.openTime(true)} />
+              {/* <Button title="Select Time" onPress={() => this.openTime(true)} /> */}
+              <Ionicons
+                name="ios-time-outline"
+                size={34}
+                color="black"
+                onPress={() => this.openTime(true)}
+              />
             </View>
           </View>
         </View>
@@ -308,23 +322,25 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    // paddingTop: 50,
-  },
-  taskWrapper: {
-    flexDirection: "column",
     justifyContent: "space-between",
-    paddingHorizontal: 20,
+    // paddingTop: 50,
   },
   sectionTitle: {
     fontSize: 24,
     fontWeight: "bold",
   },
   calandarCont: {
-    marginTop: 20,
+    marginTop: 5,
   },
   bottomCont: {
+    height: 100,
+    position: "absolute",
+    marginHorizontal: 15,
     flexDirection: "column",
-    width: "100%",
+    backgroundColor: "#acc8d7",
+    borderRadius: 15,
+    elevation: 10,
+    top: 330,
   },
   bottomContChild: {
     paddingLeft: 15,
@@ -334,14 +350,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   bottomContLeft: {
-    width: "50%",
-
+    width: "85%",
+    paddingRight: 10,
     flexDirection: "row",
-    justifyContent: "flex-start",
+    justifyContent: "flex-end",
   },
   bottomContRight: {
     paddingTop: 10,
-    width: "50%",
+    right: 0,
+    width: "15%",
     flexDirection: "row",
     justifyContent: "flex-end",
     paddingRight: 15,

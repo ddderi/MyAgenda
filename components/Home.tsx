@@ -193,7 +193,7 @@ const Home = React.forwardRef((props, ref: any) => {
             color="#2196f3"
           />
         </View>
-        <Text>
+        <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>
           {dayOftheWeek[IndexOfDay]}, {dateDisplayed}
         </Text>
         <View style={styles.iconStyle}>
@@ -254,6 +254,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
     // paddingTop: 20,
+    fontFamily: "sans-serif",
+    fontSize: 22,
+    fontWeight: "bold",
   },
   taskWrapper: {
     flexDirection: "column",
@@ -261,7 +264,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontFamily: "sans-serif",
+    fontSize: 22,
     fontWeight: "bold",
   },
   items: {
