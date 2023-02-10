@@ -53,7 +53,9 @@ const Task: React.FC<{
           <View style={styles.itemLeft}>
             <Checkbox done={done} id={id} name={name} time={time} date={date} />
             {/* <TouchableOpacity style={styles.square} ></TouchableOpacity> */}
-            <Text style={styles.task}>{name}</Text>
+            <Text style={styles.task}>
+              {name}and {date}
+            </Text>
           </View>
           <View style={done === 1 ? styles.iconbin : styles.iconhid}>
             <TouchableOpacity onPress={() => handleDeletetask()}>

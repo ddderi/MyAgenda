@@ -128,8 +128,7 @@ const Settings = () => {
               <Text
                 style={{
                   fontFamily: "sans-serif",
-                  fontSize: 22,
-                  fontWeight: "bold",
+                  fontSize: 18,
                 }}
               >
                 {!isEnabled ? "Disabled" : timeString}

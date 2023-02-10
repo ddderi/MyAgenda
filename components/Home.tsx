@@ -38,10 +38,7 @@ type Newtask = {
 };
 
 const Home = React.forwardRef((props, ref: any) => {
-  //
   const [task, setTask] = useState<string>("");
-
-  //
 
   const db = SQLite.openDatabase("todos.db");
   const datelocal = new Date();
@@ -121,18 +118,20 @@ const Home = React.forwardRef((props, ref: any) => {
       );
     });
 
-    db.transaction((tx) => {
-      tx.executeSql(
-        "DELETE FROM todos WHERE date < ?",
-        [datelocalStr],
-        (txObj, resultSet: any) => {
-          console.log(resultSet.rows._array);
-        },
-        (_, error): boolean | any => {
-          console.warn(error);
-        }
-      );
-    });
+    // for deleting all todos in the past
+
+    // db.transaction((tx) => {
+    //   tx.executeSql(
+    //     "DELETE FROM todos WHERE date < ?",
+    //     [datelocalStr],
+    //     (txObj, resultSet: any) => {
+    //       console.log(resultSet.rows._array);
+    //     },
+    //     (_, error): boolean | any => {
+    //       console.warn(error);
+    //     }
+    //   );
+    // });
 
     db.transaction((tx) => {
       let x: any = null;
