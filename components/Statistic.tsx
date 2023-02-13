@@ -28,10 +28,6 @@ const Statistic = () => {
   const [numberCompleted, setNumberCompleted] = useState([0, 0, 0, 0, 0]);
   const [numberPending, setNumberPending] = useState([0, 0, 0, 0, 0]);
 
-  // console.log(completedTasks);
-  // console.log(pendingTasks);
-  // console.log(numberCompleted);
-  // console.log(numberPending);
   let mergeArray = [
     ...numberCompleted,
     ...numberPending,
@@ -494,18 +490,14 @@ const Statistic = () => {
 
 const styles = StyleSheet.create({
   select: {
-    // position: "relative",
-    // right: -200,
     marginTop: 5,
     width: "38%",
-    // flexDirection: "row",
     justifyContent: "flex-end",
-    // alignItems: "center",
   },
   wrapper: {
     flex: 1,
     flexDirection: "column",
-    marginTop: 10,
+    marginTop: 20,
     height: "100%",
     paddingHorizontal: 15,
   },

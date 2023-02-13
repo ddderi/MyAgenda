@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Platform, StatusBar } from "react-native";
+import { Platform } from "react-native";
+import { StatusBar } from "expo-status-bar";
 import { Provider as ReduxProvider } from "react-redux";
 import store from "./redux/store";
 import { createStackNavigator } from "@react-navigation/stack";
 import * as Notifications from "expo-notifications";
 import { isDevice } from "expo-device";
 import AppNavigator from "./components/AppNavigator";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -83,8 +85,8 @@ const App: React.FC = () => {
 
   return (
     <ReduxProvider store={store}>
-      <StatusBar />
       <AppNavigator />
+      <StatusBar style="dark" />
     </ReduxProvider>
   );
 };
