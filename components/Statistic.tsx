@@ -10,7 +10,7 @@ import * as SQLite from "expo-sqlite";
 import { RootState } from "../redux/store";
 import { LineChart } from "react-native-chart-kit";
 import moment from "moment";
-import DropDownPicker from "react-native-dropdown-picker";
+import { Picker } from "@react-native-picker/picker";
 
 const Statistic = () => {
   const db = SQLite.openDatabase("todos.db");
@@ -28,7 +28,16 @@ const Statistic = () => {
   const [numberCompleted, setNumberCompleted] = useState([0, 0, 0, 0, 0]);
   const [numberPending, setNumberPending] = useState([0, 0, 0, 0, 0]);
 
-  let mergeArray = [...numberCompleted, ...numberPending];
+  // console.log(completedTasks);
+  // console.log(pendingTasks);
+  // console.log(numberCompleted);
+  // console.log(numberPending);
+  let mergeArray = [
+    ...numberCompleted,
+    ...numberPending,
+    completedTasks.length,
+    pendingTasks.length,
+  ];
 
   const determineYMax = (arr: number[]) => {
     let highestY = 0;
@@ -40,28 +49,15 @@ const Statistic = () => {
     return highestY;
   };
 
-  const [open, setOpen] = useState(false);
-
-  const [value, setValue] = useState([
-    "italy",
-    "spain",
-    "barcelona",
-    "finland",
-  ]);
-  const [items, setItems] = useState([
-    { label: "Spain", value: "spain" },
-    { label: "Madrid", value: "madrid", parent: "spain" },
-    { label: "Barcelona", value: "barcelona", parent: "spain" },
-
-    { label: "Italy", value: "italy" },
-    { label: "Rome", value: "rome", parent: "italy" },
-
-    { label: "Finland", value: "finland" },
-  ]);
-
-  const IndexOfDay = moment(new Date()).format("DD/MM");
+  const IndexOfDay = moment(new Date()).format("DD/MM/YYYY");
   const dayPast = (day: number) =>
-    moment(IndexOfDay, "DD/MM").subtract(day, "days").format("DD/MM");
+    moment(IndexOfDay, "DD/MM/YYYY").subtract(day, "days").format("DD/MM");
+
+  const [selectedDateRef, setSelectedDateRef] = useState(IndexOfDay);
+
+  // const IndexOfDay = moment(new Date()).format("DD/MM");
+  const dayPastDynamic = (day: number) =>
+    moment(selectedDateRef, "DD/MM/YYYY").subtract(day, "days").format("DD/MM");
 
   useEffect(() => {
     const today = moment(new Date()).format("DD/MM/YYYY");
@@ -220,7 +216,6 @@ const Statistic = () => {
         "SELECT * FROM todos WHERE done = ? AND date = ?",
         [0, dayPast(5)],
         (txObj, resultSet: any) => {
-          console.log("test", dayPast(5));
           copyNumberPending[0] = resultSet.rows._array.length;
           setNumberPending(copyNumberPending);
         },
@@ -233,14 +228,15 @@ const Statistic = () => {
 
   useEffect(() => {
     if (stateLoaded === true) {
-      const today = moment(new Date()).format("DD/MM/YYYY");
       const dayPast = (day: number) =>
-        moment(today, "DD/MM/YYYY").subtract(day, "days").format("DD/MM/YYYY");
+        moment(selectedDateRef, "DD/MM/YYYY")
+          .subtract(day, "days")
+          .format("DD/MM/YYYY");
 
       db.transaction((tx) => {
         tx.executeSql(
           "SELECT * FROM todos WHERE done = ? AND date = ?",
-          [1, today],
+          [1, dayPast(0)],
           (txObj, resultSet: any) => {
             dispatch(loadCompletedTasks(resultSet.rows._array));
           },
@@ -253,7 +249,7 @@ const Statistic = () => {
       db.transaction((tx) => {
         tx.executeSql(
           "SELECT * FROM todos WHERE done = ? AND date = ?",
-          [0, today],
+          [0, dayPast(0)],
           (txObj, resultSet: any) => {
             dispatch(loadPendingTasks(resultSet.rows._array));
           },
@@ -389,7 +385,6 @@ const Statistic = () => {
           "SELECT * FROM todos WHERE done = ? AND date = ?",
           [0, dayPast(5)],
           (txObj, resultSet: any) => {
-            console.log("test", dayPast(5));
             copyNumberPending[0] = resultSet.rows._array.length;
             setNumberPending(copyNumberPending);
           },
@@ -403,21 +398,29 @@ const Statistic = () => {
     }
   }, [stateLoaded]);
 
+  const refreshData = (itemValue: string) => {
+    setSelectedDateRef(itemValue);
+    dispatch(triggerLoading(true));
+  };
+
   return (
     <View style={styles.wrapper}>
       <View style={styles.top}>
         <Text style={styles.title}>Tasks Overview</Text>
       </View>
       <View style={styles.select}>
-        <DropDownPicker
-          open={open}
-          value={value}
-          items={items}
-          setOpen={setOpen}
-          setValue={setValue}
-          setItems={setItems}
-          multiple={true}
-        />
+        <View>
+          <Picker
+            selectedValue={selectedDateRef}
+            onValueChange={(itemValue, itemIndex) => refreshData(itemValue)}
+          >
+            <Picker.Item label="Today" value={IndexOfDay} />
+            <Picker.Item label="Yesterday" value={dayPast(1)} />
+            <Picker.Item label={dayPast(2)} value={dayPast(2)} />
+            <Picker.Item label={dayPast(3)} value={dayPast(3)} />
+            <Picker.Item label={dayPast(4)} value={dayPast(4)} />
+          </Picker>
+        </View>
       </View>
       <View style={styles.middle}>
         <View style={styles.topLeft}>
@@ -437,12 +440,12 @@ const Statistic = () => {
         <LineChart
           data={{
             labels: [
-              `${dayPast(5)}`,
-              `${dayPast(4)}`,
-              `${dayPast(3)}`,
-              `${dayPast(2)}`,
-              `${dayPast(1)}`,
-              "Today",
+              `${dayPastDynamic(5)}`,
+              `${dayPastDynamic(4)}`,
+              `${dayPastDynamic(3)}`,
+              `${dayPastDynamic(2)}`,
+              `${dayPastDynamic(1)}`,
+              `${moment(selectedDateRef, "DD/MM/YYYY").format("DD/MM")}`,
             ],
             datasets: [
               {
@@ -466,7 +469,7 @@ const Statistic = () => {
             backgroundColor: "#acc8d7",
             backgroundGradientFrom: "#acc8d7",
             backgroundGradientTo: "#acc8d7",
-            decimalPlaces: 2,
+            decimalPlaces: 0,
             color: (opacity = 1) => `rgba(60, 179, 113, ${opacity})`,
 
             labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -491,9 +494,13 @@ const Statistic = () => {
 
 const styles = StyleSheet.create({
   select: {
-    left: 100,
-    marginTop: 15,
-    width: "50%",
+    // position: "relative",
+    // right: -200,
+    marginTop: 5,
+    width: "38%",
+    // flexDirection: "row",
+    justifyContent: "flex-end",
+    // alignItems: "center",
   },
   wrapper: {
     flex: 1,
@@ -505,7 +512,7 @@ const styles = StyleSheet.create({
   top: {
     backgroundColor: "#acc8d7",
     height: 50,
-    marginTop: 15,
+    marginTop: 10,
     borderRadius: 15,
     paddingLeft: 10,
     justifyContent: "center",
@@ -541,11 +548,11 @@ const styles = StyleSheet.create({
   middle: {
     flexDirection: "row",
     height: "15%",
-    marginTop: 15,
+    marginTop: 5,
     justifyContent: "space-between",
   },
   bottom: {
-    marginTop: 15,
+    marginTop: 10,
   },
 });
 

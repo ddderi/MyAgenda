@@ -126,23 +126,41 @@ const BottomNav = () => {
       <Tab.Screen
         name="Add"
         component={Statistic}
-        options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <Entypo name="add-to-list" size={50} color="black" />
-          ),
-          tabBarButton: (props) => (
-            <View style={styles.buttoninput}>
-              <TouchableOpacity onPress={() => dispatch(setInputRef(true))}>
-                {/* <TouchableOpacity onPress={() => inputRef.current.focus()}> */}
-
-                {/* <TouchableOpacity onPress={() => setInputDisplay(true)}> */}
-                <View style={styles.buttonborder}>
-                  <Entypo name="add-to-list" size={50} color="white" />
-                  {/* <Entypo name="add-to-list" size={50} color="white" /> */}
+        options={({ navigation }) => {
+          const { index } = navigation.getState();
+          if (index === 3 || index === 4) {
+            return {
+              tabBarIcon: ({ focused, color, size }) => (
+                <Entypo name="add-to-list" size={50} color="black" />
+              ),
+              tabBarButton: (props) => (
+                <View style={styles.buttoninput}>
+                  <TouchableOpacity
+                    onPress={() => navigation.navigate("Tasks")}
+                  >
+                    <View style={styles.buttonborder}>
+                      <Entypo name="add-to-list" size={50} color="white" />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-          ),
+              ),
+            };
+          } else {
+            return {
+              tabBarIcon: ({ focused, color, size }) => (
+                <Entypo name="add-to-list" size={50} color="black" />
+              ),
+              tabBarButton: (props) => (
+                <View style={styles.buttoninput}>
+                  <TouchableOpacity onPress={() => dispatch(setInputRef(true))}>
+                    <View style={styles.buttonborder}>
+                      <Entypo name="add-to-list" size={50} color="white" />
+                    </View>
+                  </TouchableOpacity>
+                </View>
+              ),
+            };
+          }
         }}
       />
       <Tab.Screen

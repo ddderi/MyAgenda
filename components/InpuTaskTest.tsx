@@ -29,7 +29,6 @@ type Props = {
   showinput: boolean;
   date: Date;
   dateDisp: boolean;
-  // forwardedRef: any;
   addTask: any;
   triggerLoading: any;
 };

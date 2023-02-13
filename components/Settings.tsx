@@ -22,7 +22,6 @@ const Settings = () => {
   const [show, setShow] = useState(false);
   const [timeString, setTimeString] = useState<string>("");
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
-  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
 
   const handleNotifications = async (hour: number, minute: number) => {
     if (isEnabled) {
