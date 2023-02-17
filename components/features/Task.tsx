@@ -4,6 +4,8 @@ import Checkbox from "./Checkbox";
 import { deleteTask, changeDone, triggerLoading } from "../../redux/taskSlice";
 import { Ionicons } from "@expo/vector-icons";
 import { useDispatch } from "react-redux";
+(moment as any).suppressDeprecationWarnings = true;
+import moment from "moment";
 
 type Tasktodelete = {
   id: number | undefined;
@@ -48,14 +50,12 @@ const Task: React.FC<{
   return (
     <TouchableOpacity onPress={() => ChangeDone()}>
       <View>
-        <Text>{time}</Text>
+        <Text>{moment(time, "hh:mm A").format("hh:mm A")}</Text>
         <View style={done === 1 ? styles.containerdone : styles.container}>
           <View style={styles.itemLeft}>
             <Checkbox done={done} id={id} name={name} time={time} date={date} />
             {/* <TouchableOpacity style={styles.square} ></TouchableOpacity> */}
-            <Text style={styles.task}>
-              {name}and {date}
-            </Text>
+            <Text style={styles.task}>{name}</Text>
           </View>
           <View style={done === 1 ? styles.iconbin : styles.iconhid}>
             <TouchableOpacity onPress={() => handleDeletetask()}>

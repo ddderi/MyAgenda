@@ -7,30 +7,63 @@ import {
   Button,
   Switch,
 } from "react-native";
-import { AntDesign } from "@expo/vector-icons";
-import { useNavigation, ParamListBase } from "@react-navigation/native";
-import { DrawerNavigationProp } from "@react-navigation/drawer";
 import * as Notification from "expo-notifications";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { Ionicons } from "@expo/vector-icons";
 (moment as any).suppressDeprecationWarnings = true;
+import * as SQLite from "expo-sqlite";
+
+type Task = {
+  id: number | undefined;
+  name: string;
+  done: number;
+  time: string;
+  date: string;
+};
 
 const Settings = () => {
   const [time, setTime] = useState<Date>(new Date());
   const [show, setShow] = useState(false);
   const [timeString, setTimeString] = useState<string>("");
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
+  // const [arrayOfTask, setArrayOfTask] = useState<string[]>([]);
+  // let arrayOfTaskVar: string[] = [];
+  // const db = SQLite.openDatabase("todos.db");
 
   const handleNotifications = async (hour: number, minute: number) => {
     if (isEnabled) {
+      // let arrayOfTaskVar: string[] = [];
+      // db.transaction((tx) => {
+      //   let x: any = null;
+      //   tx.executeSql(
+      //     "SELECT * FROM todos",
+      //     x,
+      //     (txObj, resultSet: any) => {
+      //       resultSet.rows._array.map(
+      //         (taskName: Task) => arrayOfTaskVar.push(`${taskName.name}'\\n'`)
+      //         // setArrayOfTask([...arrayOfTask, taskName.name])
+      //       );
+      //       // setArrayOfTask(arrayOfTaskVar);
+      //       console.log("ici", arrayOfTaskVar);
+      //       setArrayOfTask(arrayOfTaskVar);
+      //     },
+      //     (_, error): boolean | any => {
+      //       console.warn(error);
+      //     }
+      //   );
+      // });
+
+      Notification.addNotificationReceivedListener((response) => {
+        console.log("test", response);
+      });
       const id = await Notification.scheduleNotificationAsync({
         content: {
-          title: "Local notifications",
-          body: "this is my local notifications",
+          title: "Today's tasks, Have a good day",
+          body: ``,
           data: {
-            data: "data goes here",
+            data: "",
           },
         },
         trigger: {
@@ -102,6 +135,8 @@ const Settings = () => {
       <View style={styles.top}>
         <Text style={styles.title}>Settings</Text>
       </View>
+      {/* {console.log(arrayOfTask)} */}
+
       <View style={styles.wrapper}>
         <View style={styles.toggle}>
           <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>

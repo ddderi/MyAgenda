@@ -27,7 +27,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import * as SQLite from "expo-sqlite";
 import ButtonCustom from "./features/ButtonCustom";
 import { Ionicons } from "@expo/vector-icons";
-import Swipelist from "react-native-swipe-list-view";
 
 type Newtask = {
   id: number | undefined;
