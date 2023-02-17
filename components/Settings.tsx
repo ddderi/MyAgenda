@@ -15,13 +15,13 @@ import { Ionicons } from "@expo/vector-icons";
 (moment as any).suppressDeprecationWarnings = true;
 import * as SQLite from "expo-sqlite";
 
-type Task = {
-  id: number | undefined;
-  name: string;
-  done: number;
-  time: string;
-  date: string;
-};
+// type Task = {
+//   id: number | undefined;
+//   name: string;
+//   done: number;
+//   time: string;
+//   date: string;
+// };
 
 const Settings = () => {
   const [time, setTime] = useState<Date>(new Date());

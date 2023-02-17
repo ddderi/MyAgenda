@@ -15,7 +15,6 @@ import { AntDesign, Fontisto } from "@expo/vector-icons";
 import CalendarPicker from "react-native-calendar-picker";
 import moment from "moment";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import InputTask from "./features/InputTask";
 import {
   setDateDisplay,
   setInputRef,
@@ -68,7 +67,6 @@ export class Calendar extends Component<Props, State> {
     };
     this.onDateChange = this.onDateChange.bind(this);
     this.onChangeTime = this.onChangeTime.bind(this);
-    this.showInputTask = this.showInputTask.bind(this);
     this.showTimePicker = this.showTimePicker.bind(this);
     this.resetState = this.resetState.bind(this);
   }
@@ -93,12 +91,6 @@ export class Calendar extends Component<Props, State> {
   showTimePicker(state: boolean) {
     this.setState({
       show: state,
-    });
-  }
-
-  showInputTask(state: boolean) {
-    this.setState({
-      showinput: state,
     });
   }
 
