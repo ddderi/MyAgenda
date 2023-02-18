@@ -13,51 +13,27 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import moment from "moment";
 import { Ionicons } from "@expo/vector-icons";
 (moment as any).suppressDeprecationWarnings = true;
-import * as SQLite from "expo-sqlite";
-
-// type Task = {
-//   id: number | undefined;
-//   name: string;
-//   done: number;
-//   time: string;
-//   date: string;
-// };
+import { useNavigation, ParamListBase } from "@react-navigation/native";
+import { DrawerNavigationProp } from "@react-navigation/drawer";
 
 const Settings = () => {
   const [time, setTime] = useState<Date>(new Date());
   const [show, setShow] = useState(false);
   const [timeString, setTimeString] = useState<string>("");
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
+  const navigation = useNavigation<DrawerNavigationProp<ParamListBase>>();
   // const [arrayOfTask, setArrayOfTask] = useState<string[]>([]);
   // let arrayOfTaskVar: string[] = [];
   // const db = SQLite.openDatabase("todos.db");
 
+  useEffect(() => {
+    Notification.addNotificationResponseReceivedListener(() => {
+      navigation.jumpTo("Tasks");
+    });
+  }, []);
+
   const handleNotifications = async (hour: number, minute: number) => {
     if (isEnabled) {
-      // let arrayOfTaskVar: string[] = [];
-      // db.transaction((tx) => {
-      //   let x: any = null;
-      //   tx.executeSql(
-      //     "SELECT * FROM todos",
-      //     x,
-      //     (txObj, resultSet: any) => {
-      //       resultSet.rows._array.map(
-      //         (taskName: Task) => arrayOfTaskVar.push(`${taskName.name}'\\n'`)
-      //         // setArrayOfTask([...arrayOfTask, taskName.name])
-      //       );
-      //       // setArrayOfTask(arrayOfTaskVar);
-      //       console.log("ici", arrayOfTaskVar);
-      //       setArrayOfTask(arrayOfTaskVar);
-      //     },
-      //     (_, error): boolean | any => {
-      //       console.warn(error);
-      //     }
-      //   );
-      // });
-
-      Notification.addNotificationReceivedListener((response) => {
-        console.log("test", response);
-      });
       const id = await Notification.scheduleNotificationAsync({
         content: {
           title: "Today's tasks, Have a good day",
@@ -135,14 +111,12 @@ const Settings = () => {
       <View style={styles.top}>
         <Text style={styles.title}>Settings</Text>
       </View>
-      {/* {console.log(arrayOfTask)} */}
-
       <View style={styles.wrapper}>
         <View style={styles.toggle}>
           <Text style={{ fontFamily: "sans-serif", fontSize: 18 }}>
             Notifications
           </Text>
-          <View style={{ width: "45%" }}>
+          <View style={{ marginLeft: 105 }}>
             <Switch
               trackColor={{ false: "#767577", true: "#81b0ff" }}
               thumbColor={isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -245,7 +219,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   iconstyle: {
-    marginLeft: 10,
+    marginLeft: 35,
     marginRight: 11,
     flexDirection: "row",
     alignItems: "center",
@@ -255,7 +229,7 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     backgroundColor: "#acc8d7",
-    paddingHorizontal: 10,
+    paddingHorizontal: 20,
     borderRadius: 15,
     paddingBottom: 20,
     elevation: 8,

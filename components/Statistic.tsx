@@ -452,12 +452,16 @@ const Statistic = () => {
                 color: (opacity = 1) => `rgba(255, 0, 0, ${opacity})`,
                 data: [...numberPending, pendingTasks.length],
               },
+              {
+                color: (opacity = -1) => `rgba(172, 200, 215, ${opacity})`,
+                data: [determineYMax(mergeArray) + 1],
+              },
             ],
           }}
           width={Dimensions.get("window").width - 29}
           height={280}
-          segments={determineYMax(mergeArray)}
-          fromZero={true}
+          segments={determineYMax(mergeArray) + 1}
+          fromZero={false}
           yAxisLabel=""
           yAxisSuffix=""
           yAxisInterval={1}
@@ -504,7 +508,7 @@ const styles = StyleSheet.create({
   top: {
     backgroundColor: "#acc8d7",
     height: 50,
-    marginTop: 10,
+    marginTop: 20,
     borderRadius: 15,
     paddingLeft: 10,
     justifyContent: "center",

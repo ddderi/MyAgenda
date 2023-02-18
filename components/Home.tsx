@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
-    paddingTop: 20,
+    paddingTop: 32,
     fontFamily: "sans-serif",
     fontSize: 22,
     fontWeight: "bold",
